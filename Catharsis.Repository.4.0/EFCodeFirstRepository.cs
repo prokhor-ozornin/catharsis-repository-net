@@ -4,6 +4,7 @@ using System.Data;
 using System.Data.Entity;
 using System.Data.Entity.Core.Objects;
 using System.Linq;
+using System.Linq.Expressions;
 using Catharsis.Commons;
 
 namespace Catharsis.Repository
@@ -27,6 +28,15 @@ namespace Catharsis.Repository
       Assertion.NotNull(context);
 
       this.dbContext = context;
+    }
+
+    /// <summary>
+    ///   <para>Returns enumerator to iterate through entities of <typeparamref name="ENTITY"/> type in the underlying data storage.</para>
+    /// </summary>
+    /// <returns>Enumerator for iteration through repository's data.</returns>
+    public override IEnumerator<ENTITY> GetEnumerator()
+    {
+      return this.DbContext.Set<ENTITY>().AsQueryable().GetEnumerator();
     }
 
     /// <summary>
@@ -66,15 +76,6 @@ namespace Catharsis.Repository
     {
       this.DbContext.Set<ENTITY>().RemoveRange(this.dbContext.Set<ENTITY>());
       return this;
-    }
-
-    /// <summary>
-    ///   <para>Returns enumerator to iterate through entities of <typeparamref name="ENTITY"/> type in the underlying data storage.</para>
-    /// </summary>
-    /// <returns>Enumerator for iteration through repository's data.</returns>
-    public override IEnumerator<ENTITY> GetEnumerator()
-    {
-      return this.DbContext.Set<ENTITY>().AsQueryable().GetEnumerator();
     }
 
     /// <summary>
@@ -118,16 +119,35 @@ namespace Catharsis.Repository
     }
 
     /// <summary>
+    ///   <para>Implementation of <see cref="IQueryable{ENTITY}.Expression"/> property.</para>
+    /// </summary>
+    public override Expression Expression
+    {
+      get { return this.DbContext.Set<ENTITY>().AsQueryable().Expression; }
+    }
+
+    /// <summary>
+    ///   <para>Implementation of <see cref="IQueryable{ENTITY}.ElementType"/> property.</para>
+    /// </summary>
+    public override Type ElementType
+    {
+      get { return this.DbContext.Set<ENTITY>().AsQueryable().ElementType; }
+    }
+
+    /// <summary>
+    ///   <para>Implementation of <see cref="IQueryable{ENTITY}.Provider"/> property.</para>
+    /// </summary>
+    public override IQueryProvider Provider
+    {
+      get { return this.DbContext.Set<ENTITY>().AsQueryable().Provider; }
+    }
+
+    /// <summary>
     ///   <para>Allows direct access to Entity Framework <see cref="DbContext"/> instance.</para>
     /// </summary>
     public DbContext DbContext
     {
       get { return this.dbContext; }
-    }
-
-    protected override void OnDisposing()
-    {
-      this.DbContext.Dispose();
     }
   }
 }

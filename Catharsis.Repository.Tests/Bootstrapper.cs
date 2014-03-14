@@ -12,7 +12,10 @@ namespace Catharsis.Repository
     public static IUnityContainer Unity()
     {
       var container = new UnityContainer();
-      container.RegisterInstance<IRepository<MockEntity>>(new NHibernateRepository<MockEntity>(NHibernate()));
+      var configuration = NHibernate();
+      
+      container.RegisterInstance<IRepository<MockEntity>>(new NHibernateRepository<MockEntity>(configuration));
+      
       return container;
     }
 

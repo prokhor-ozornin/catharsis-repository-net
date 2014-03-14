@@ -3,6 +3,7 @@ using System.Configuration;
 using System.Data;
 using System.Data.Common;
 using System.Linq;
+using Catharsis.Commons;
 using Xunit;
 
 namespace Catharsis.Repository
@@ -12,24 +13,35 @@ namespace Catharsis.Repository
   /// </summary>
   public sealed class LinqToSqlRepositoryTests : IDisposable
   {
+    private readonly string connectionString = ConfigurationManager.ConnectionStrings["SQLServer"].ConnectionString;
+
     /// <summary>
     ///   <para>Performs testing of class constructor(s).</para>
+    ///   <seealso cref="LinqToSqlRepository{ENTITY}(string)"/>
     ///   <seealso cref="LinqToSqlRepository{ENTITY}(IDbConnection)"/>
     /// </summary>
     [Fact]
     public void Constructors()
     {
-      Assert.Throws<ArgumentNullException>(() => new LinqToSqlRepository<MockEntity>(null));
+      Assert.Throws<ArgumentNullException>(() => new LinqToSqlRepository<MockEntity>((string)null));
+      Assert.Throws<ArgumentException>(() => new LinqToSqlRepository<MockEntity>(string.Empty));
+      Assert.Throws<ArgumentNullException>(() => new LinqToSqlRepository<MockEntity>((IDbConnection)null));
 
-      IDbConnection connection;
-      using (connection = this.Connection())
+      using (var repository = new LinqToSqlRepository<MockEntity>(this.connectionString))
+      {
+        Assert.Equal(ConnectionState.Closed, repository.DataContext.Connection.State);
+        Assert.True(repository.Field("ownsConnection").To<bool>());
+      }
+
+      using (var connection = this.Connection())
       {
         using (var repository = new LinqToSqlRepository<MockEntity>(connection))
         {
           Assert.True(ReferenceEquals(repository.DataContext.Connection, connection));
+          Assert.False(repository.Field("ownsConnection").To<bool>());
         }
+        Assert.Equal(ConnectionState.Open, connection.State);
       }
-      Assert.Equal(ConnectionState.Closed, connection.State);
     }
 
     /// <summary>
@@ -192,13 +204,40 @@ namespace Catharsis.Repository
       }
     }
 
-    private IDbConnection Connection()
+    /// <summary>
+    ///   <para>Performs testing of <see cref="LinqToSqlRepository{ENTITY}.Expression"/> property.</para>
+    /// </summary>
+    [Fact]
+    public void Expression_Property()
     {
-      var connection = DbProviderFactories.GetFactory("System.Data.SqlClient").CreateConnection();
-      connection.ConnectionString = ConfigurationManager.ConnectionStrings["SQLServer"].ConnectionString;
-      connection.Open();
-      
-      return connection;
+      using (var repository = new LinqToSqlRepository<MockEntity>(this.Connection()))
+      {
+        Assert.Equal(repository.DataContext.GetTable<MockEntity>().AsQueryable().Expression.ToString(), repository.Expression.ToString());
+      }
+    }
+
+    /// <summary>
+    ///   <para>Performs testing of <see cref="LinqToSqlRepository{ENTITY}.ElementType"/> property.</para>
+    /// </summary>
+    [Fact]
+    public void ElementType_Property()
+    {
+      using (var repository = new LinqToSqlRepository<MockEntity>(this.Connection()))
+      {
+        Assert.True(ReferenceEquals(repository.DataContext.GetTable<MockEntity>().AsQueryable().ElementType, repository.ElementType));
+      }
+    }
+
+    /// <summary>
+    ///   <para>Performs testing of <see cref="LinqToSqlRepository{ENTITY}.Provider"/> property.</para>
+    /// </summary>
+    [Fact]
+    public void Provider_Property()
+    {
+      using (var repository = new LinqToSqlRepository<MockEntity>(this.Connection()))
+      {
+        Assert.Equal(repository.DataContext.GetTable<MockEntity>().AsQueryable().Provider.ToString(), repository.Provider.ToString());
+      }
     }
 
     public void Dispose()
@@ -207,6 +246,15 @@ namespace Catharsis.Repository
       {
         repository.DeleteAll().Commit();
       }
+    }
+
+    private IDbConnection Connection()
+    {
+      var connection = DbProviderFactories.GetFactory("System.Data.SqlClient").CreateConnection();
+      connection.ConnectionString = ConfigurationManager.ConnectionStrings["SQLServer"].ConnectionString;
+      connection.Open();
+
+      return connection;
     }
   }
 }

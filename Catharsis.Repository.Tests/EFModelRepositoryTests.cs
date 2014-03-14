@@ -17,18 +17,30 @@ namespace Catharsis.Repository
 
     /// <summary>
     ///   <para>Performs testing of class constructor(s).</para>
+    ///   <seealso cref="EFModelRepository{ENTITY}(ObjectContext)"/>
     ///   <seealso cref="EFModelRepository{ENTITY}(string)"/>
     /// </summary>
     [Fact]
     public void Constructors()
     {
-      Assert.Throws<ArgumentNullException>(() => new EFModelRepository<MockEntity>(null));
+      Assert.Throws<ArgumentNullException>(() => new EFModelRepository<MockEntity>((ObjectContext) null));
+      Assert.Throws<ArgumentNullException>(() => new EFModelRepository<MockEntity>((string) null));
       Assert.Throws<ArgumentException>(() => new EFModelRepository<MockEntity>(string.Empty));
+
+      var objectContext = new ObjectContext(this.connectionString);
+      using (var repository = new EFModelRepository<MockEntity>(objectContext))
+      {
+        Assert.True(ReferenceEquals(repository.ObjectContext, objectContext));
+        Assert.True(ReferenceEquals(repository.Field("objectSet").To<ObjectSet<MockEntity>>().Context, repository.Field("objectContext").To<ObjectContext>()));
+        Assert.False(repository.Field("ownsContext").To<bool>());
+      }
 
       using (var repository = new EFModelRepository<MockEntity>(this.connectionString))
       {
+        Assert.False(ReferenceEquals(repository.ObjectContext, objectContext));
         Assert.Equal(this.connectionString, repository.ObjectContext.Connection.ConnectionString);
         Assert.True(ReferenceEquals(repository.Field("objectSet").To<ObjectSet<MockEntity>>().Context, repository.Field("objectContext").To<ObjectContext>()));
+        Assert.True(repository.Field("ownsContext").To<bool>());
       }
     }
 
@@ -189,6 +201,42 @@ namespace Catharsis.Repository
       using (var repository = new EFModelRepository<MockEntity>(this.connectionString))
       {
         Assert.NotNull(repository.Transaction());
+      }
+    }
+
+    /// <summary>
+    ///   <para>Performs testing of <see cref="EFModelRepository{ENTITY}.Expression"/> property.</para>
+    /// </summary>
+    [Fact]
+    public void Expression_Property()
+    {
+      using (var repository = new EFModelRepository<MockEntity>(this.connectionString))
+      {
+        Assert.Equal(repository.ObjectContext.CreateObjectSet<MockEntity>().AsQueryable().Expression.ToString(), repository.Expression.ToString());
+      }
+    }
+
+    /// <summary>
+    ///   <para>Performs testing of <see cref="EFModelRepository{ENTITY}.ElementType"/> property.</para>
+    /// </summary>
+    [Fact]
+    public void ElementType_Property()
+    {
+      using (var repository = new EFModelRepository<MockEntity>(this.connectionString))
+      {
+        Assert.True(ReferenceEquals(repository.ObjectContext.CreateObjectSet<MockEntity>().AsQueryable().ElementType, repository.ElementType));
+      }
+    }
+
+    /// <summary>
+    ///   <para>Performs testing of <see cref="EFModelRepository{ENTITY}.Provider"/> property.</para>
+    /// </summary>
+    [Fact]
+    public void Provider_Property()
+    {
+      using (var repository = new EFModelRepository<MockEntity>(this.connectionString))
+      {
+        Assert.Equal(repository.ObjectContext.CreateObjectSet<MockEntity>().AsQueryable().Provider.ToString(), repository.Provider.ToString());
       }
     }
 

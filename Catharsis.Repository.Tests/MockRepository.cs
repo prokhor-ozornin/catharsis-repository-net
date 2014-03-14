@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Linq.Expressions;
 
 namespace Catharsis.Repository
 {
@@ -39,6 +41,21 @@ namespace Catharsis.Repository
     public override ITransaction Transaction(IsolationLevel? isolation = null)
     {
       return new MockTransaction(isolation);
+    }
+
+    public override Expression Expression
+    {
+      get { return Enumerable.Empty<ENTITY>().AsQueryable().Expression; }
+    }
+
+    public override Type ElementType
+    {
+      get { return Enumerable.Empty<ENTITY>().AsQueryable().ElementType; }
+    }
+
+    public override IQueryProvider Provider
+    {
+      get { return Enumerable.Empty<ENTITY>().AsQueryable().Provider; }
     }
   }
 }

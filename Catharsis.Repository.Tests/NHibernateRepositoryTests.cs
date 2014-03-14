@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Data;
 using System.Linq;
+using Catharsis.Commons;
 using NHibernate;
 using NHibernate.Cfg;
+using NHibernate.Linq;
 using Xunit;
 
 namespace Catharsis.Repository
@@ -16,6 +18,7 @@ namespace Catharsis.Repository
 
     /// <summary>
     ///   <para>Performs testing of class constructor(s).</para>
+    ///   <seealso cref="NHibernateRepository{ENTITY}(ISession)"/>
     ///   <seealso cref="NHibernateRepository{ENTITY}(ISessionFactory)"/>
     ///   <seealso cref="NHibernateRepository{ENTITY}(Configuration)"/>
     /// </summary>
@@ -27,18 +30,29 @@ namespace Catharsis.Repository
 
       using (var sessionFactory = this.configuration.BuildSessionFactory())
       {
-        using (var repository = new NHibernateRepository<MockEntity>(sessionFactory))
+        var session = sessionFactory.OpenSession();
+        using (var repository = new NHibernateRepository<MockEntity>(session))
         {
-          var session = repository.Session;
           Assert.True(ReferenceEquals(sessionFactory, session.SessionFactory));
           Assert.Equal(FlushMode.Never, session.FlushMode);
+          Assert.False(repository.Field("ownsSession").To<bool>());
+        }
+        session.Dispose();
+
+        using (var repository = new NHibernateRepository<MockEntity>(sessionFactory))
+        {
+          session = repository.Session;
+          Assert.True(ReferenceEquals(sessionFactory, session.SessionFactory));
+          Assert.Equal(FlushMode.Never, session.FlushMode);
+          Assert.True(repository.Field("ownsSession").To<bool>());
         }
 
         using (var repository = new NHibernateRepository<MockEntity>(this.configuration))
         {
-          var session = repository.Session;
+          session = repository.Session;
           Assert.False(ReferenceEquals(sessionFactory, session.SessionFactory));
           Assert.Equal(FlushMode.Never, session.FlushMode);
+          Assert.True(repository.Field("ownsSession").To<bool>());
         }
       }
     }
@@ -276,6 +290,42 @@ namespace Catharsis.Repository
           transaction.Commit();
         }
         Assert.Equal(0, repository.Count());
+      }
+    }
+
+    /// <summary>
+    ///   <para>Performs testing of <see cref="NHibernateRepository{ENTITY}.Expression"/> property.</para>
+    /// </summary>
+    [Fact]
+    public void Expression_Property()
+    {
+      using (var repository = new NHibernateRepository<MockEntity>(this.configuration))
+      {
+        Assert.Equal(repository.Session.Linq<MockEntity>().Expression.ToString(), repository.Expression.ToString());
+      }
+    }
+
+    /// <summary>
+    ///   <para>Performs testing of <see cref="NHibernateRepository{ENTITY}.ElementType"/> property.</para>
+    /// </summary>
+    [Fact]
+    public void ElementType_Property()
+    {
+      using (var repository = new NHibernateRepository<MockEntity>(this.configuration))
+      {
+        Assert.True(ReferenceEquals(repository.Session.Linq<MockEntity>().ElementType, repository.ElementType));
+      }
+    }
+
+    /// <summary>
+    ///   <para>Performs testing of <see cref="NHibernateRepository{ENTITY}.Provider"/> property.</para>
+    /// </summary>
+    [Fact]
+    public void Provider_Property()
+    {
+      using (var repository = new NHibernateRepository<MockEntity>(this.configuration))
+      {
+        Assert.Equal(repository.Session.Linq<MockEntity>().Provider.ToString(), repository.Provider.ToString());
       }
     }
 

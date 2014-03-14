@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity.Core.Objects;
+using System.Linq;
+using System.Linq.Expressions;
 using Catharsis.Commons;
 
 namespace Catharsis.Repository
@@ -15,6 +17,20 @@ namespace Catharsis.Repository
   {
     private readonly ObjectContext objectContext;
     private readonly IObjectSet<ENTITY> objectSet;
+    private readonly bool ownsContext;
+
+    /// <summary>
+    ///   <para>Creates new instance of Entity Framework ORM repository that works with mapped entities of <typeparamref name="ENTITY"/> type.</para>
+    /// </summary>
+    /// <param name="context">Shared <see cref="ObjectContext"/> instance, used for operations. Its lifecycle must be controlled by external code.</param>
+    /// <exception cref="ArgumentNullException">If <paramref name="context"/> is a <c>null</c> reference.</exception>
+    public EFModelRepository(ObjectContext context)
+    {
+      Assertion.NotNull(context);
+
+      this.objectContext = context;
+      this.objectSet = this.objectContext.CreateObjectSet<ENTITY>();
+    }
 
     /// <summary>
     ///   <para>Creates new instance of Entity Framework ORM repository that works with mapped entities of <typeparamref name="ENTITY"/> type.</para>
@@ -28,6 +44,7 @@ namespace Catharsis.Repository
 
       this.objectContext = new ObjectContext(connection);
       this.objectSet = this.objectContext.CreateObjectSet<ENTITY>();
+      this.ownsContext = true;
     }
 
     /// <summary>
@@ -123,6 +140,30 @@ namespace Catharsis.Repository
     }
 
     /// <summary>
+    ///   <para>Implementation of <see cref="IQueryable{ENTITY}.Expression"/> property.</para>
+    /// </summary>
+    public override Expression Expression
+    {
+      get { return this.objectSet.Expression; }
+    }
+
+    /// <summary>
+    ///   <para>Implementation of <see cref="IQueryable{ENTITY}.ElementType"/> property.</para>
+    /// </summary>
+    public override Type ElementType
+    {
+      get { return this.objectSet.ElementType; }
+    }
+
+    /// <summary>
+    ///   <para>Implementation of <see cref="IQueryable{ENTITY}.Provider"/> property.</para>
+    /// </summary>
+    public override IQueryProvider Provider
+    {
+      get { return this.objectSet.Provider; }
+    }
+
+    /// <summary>
     ///   <para>Allows direct access to Entity Framework <see cref="ObjectContext"/> instance.</para>
     /// </summary>
     public ObjectContext ObjectContext
@@ -132,7 +173,10 @@ namespace Catharsis.Repository
 
     protected override void OnDisposing()
     {
-      this.ObjectContext.Dispose();
+      if (this.ownsContext)
+      {
+        this.ObjectContext.Dispose();
+      }
     }
   }
 }

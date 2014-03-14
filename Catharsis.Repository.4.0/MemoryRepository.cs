@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
+using System.Linq.Expressions;
 using Catharsis.Commons;
 
 namespace Catharsis.Repository
@@ -99,6 +101,30 @@ namespace Catharsis.Repository
     public override ITransaction Transaction(IsolationLevel? isolation = null)
     {
       return new NoOpTransaction();
+    }
+
+    /// <summary>
+    ///   <para>Implementation of <see cref="IQueryable{ENTITY}.Expression"/> property.</para>
+    /// </summary>
+    public override Expression Expression
+    {
+      get { return this.entities.AsQueryable().Expression; }
+    }
+
+    /// <summary>
+    ///   <para>Implementation of <see cref="IQueryable{ENTITY}.ElementType"/> property.</para>
+    /// </summary>
+    public override Type ElementType
+    {
+      get { return this.entities.AsQueryable().ElementType; }
+    }
+
+    /// <summary>
+    ///   <para>Implementation of <see cref="IQueryable{ENTITY}.Provider"/> property.</para>
+    /// </summary>
+    public override IQueryProvider Provider
+    {
+      get { return this.entities.AsQueryable().Provider; }
     }
   }
 }

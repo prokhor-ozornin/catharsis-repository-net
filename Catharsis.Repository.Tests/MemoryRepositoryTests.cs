@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using Catharsis.Commons;
 using Xunit;
 
 namespace Catharsis.Repository
@@ -255,6 +257,42 @@ namespace Catharsis.Repository
           transaction.Commit();
         }
         Assert.Equal(0, repository.Count());
+      }
+    }
+
+    /// <summary>
+    ///   <para>Performs testing of <see cref="MemoryRepository{ENTITY}.Expression"/> property.</para>
+    /// </summary>
+    [Fact]
+    public void Expression_Property()
+    {
+      using (var repository = new MemoryRepository<MockEntity>())
+      {
+        Assert.Equal(repository.Field("entities").To<IEnumerable<MockEntity>>().AsQueryable().Expression.ToString(), repository.Expression.ToString());
+      }
+    }
+
+    /// <summary>
+    ///   <para>Performs testing of <see cref="MemoryRepository{ENTITY}.ElementType"/> property.</para>
+    /// </summary>
+    [Fact]
+    public void ElementType_Property()
+    {
+      using (var repository = new MemoryRepository<MockEntity>())
+      {
+        Assert.True(ReferenceEquals(repository.Field("entities").To<IEnumerable<MockEntity>>().AsQueryable().ElementType, repository.ElementType));
+      }
+    }
+
+    /// <summary>
+    ///   <para>Performs testing of <see cref="MemoryRepository{ENTITY}.Provider"/> property.</para>
+    /// </summary>
+    [Fact]
+    public void Provider_Property()
+    {
+      using (var repository = new MemoryRepository<MockEntity>())
+      {
+        Assert.Equal(repository.Field("entities").To<IEnumerable<MockEntity>>().AsQueryable().Provider.ToString(), repository.Provider.ToString());
       }
     }
 

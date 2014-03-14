@@ -8,7 +8,7 @@ namespace Catharsis.Repository
   /// <summary>
   ///   <para>Tests set for class <see cref="Repository"/>.</para>
   /// </summary>
-  public sealed class RepositoryTests
+  public sealed class RepositoryTests : IDisposable
   {
     private readonly UnityServiceLocator serviceLocator = new UnityServiceLocator(Bootstrapper.Unity());
 
@@ -18,14 +18,17 @@ namespace Catharsis.Repository
     [Fact]
     public void For_Method()
     {
-      ServiceLocator.SetLocatorProvider(null);
-
       Assert.Throws<InvalidOperationException>(() => Repository.For<MockEntity>());
 
       ServiceLocator.SetLocatorProvider(() => this.serviceLocator);
 
       Assert.NotNull(Repository.For<MockEntity>());
       Assert.True(ReferenceEquals(Repository.For<MockEntity>(), Repository.For<MockEntity>()));
+    }
+
+    public void Dispose()
+    {
+      ServiceLocator.SetLocatorProvider(null);
     }
   }
 }

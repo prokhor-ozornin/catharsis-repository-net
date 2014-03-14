@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 
 namespace Catharsis.Repository
 {
@@ -10,7 +10,7 @@ namespace Catharsis.Repository
   ///   <para>Particular persistence logic depends upon the implementation.</para>
   /// </summary>
   /// <typeparam name="ENTITY">Type of business entities.</typeparam>
-  public interface IRepository<ENTITY> : IDisposable, IEnumerable<ENTITY> where ENTITY : class
+  public interface IRepository<ENTITY> : IDisposable, IQueryable<ENTITY> where ENTITY : class
   {
     /// <summary>
     ///   <para>Saves all non-persisted changes to the underlying data storage facility by persisting modified entities and deleting those which have been marked as deleted.</para>

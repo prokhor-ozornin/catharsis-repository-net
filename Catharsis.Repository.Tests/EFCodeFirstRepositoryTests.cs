@@ -187,6 +187,42 @@ namespace Catharsis.Repository
       }
     }
 
+    /// <summary>
+    ///   <para>Performs testing of <see cref="EFCodeFirstRepository{ENTITY}.Expression"/> property.</para>
+    /// </summary>
+    [Fact]
+    public void Expression_Property()
+    {
+      using (var repository = new EFCodeFirstRepository<MockEntity>(new MockContext()))
+      {
+        Assert.Equal(repository.DbContext.Set<MockEntity>().AsQueryable().Expression.ToString(), repository.Expression.ToString());
+      }
+    }
+
+    /// <summary>
+    ///   <para>Performs testing of <see cref="EFCodeFirstRepository{ENTITY}.ElementType"/> property.</para>
+    /// </summary>
+    [Fact]
+    public void ElementType_Property()
+    {
+      using (var repository = new EFCodeFirstRepository<MockEntity>(new MockContext()))
+      {
+        Assert.True(ReferenceEquals(repository.DbContext.Set<MockEntity>().AsQueryable().ElementType, repository.ElementType));
+      }
+    }
+
+    /// <summary>
+    ///   <para>Performs testing of <see cref="EFCodeFirstRepository{ENTITY}.Provider"/> property.</para>
+    /// </summary>
+    [Fact]
+    public void Provider_Property()
+    {
+      using (var repository = new EFCodeFirstRepository<MockEntity>(new MockContext()))
+      {
+        Assert.Equal(repository.DbContext.Set<MockEntity>().AsQueryable().Provider.ToString(), repository.Provider.ToString());
+      }
+    }
+
     public void Dispose()
     {
       using (var repository = new EFCodeFirstRepository<MockEntity>(new MockContext()))

@@ -1,6 +1,9 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
+using System.Linq.Expressions;
 
 namespace Catharsis.Repository
 {
@@ -32,6 +35,12 @@ namespace Catharsis.Repository
     public abstract IRepository<ENTITY> Refresh(ENTITY entity);
 
     public abstract ITransaction Transaction(IsolationLevel? isolation = null);
+
+    public abstract Expression Expression { get; }
+
+    public abstract Type ElementType { get; }
+
+    public abstract IQueryProvider Provider { get; }
 
     protected virtual void OnDisposing()
     {

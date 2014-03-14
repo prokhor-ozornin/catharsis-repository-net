@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Linq;
+using System.Linq;
+using System.Linq.Expressions;
 using Catharsis.Commons;
 
 namespace Catharsis.Repository
@@ -14,15 +16,35 @@ namespace Catharsis.Repository
   public class LinqToSqlRepository<ENTITY> : RepositoryBase<ENTITY> where ENTITY : class
   {
     private readonly DataContext dataContext;
+    private readonly bool ownsConnection;
 
     /// <summary>
     ///   <para>Creates new instance of LinqToSQL ORM repository that works with mapped entities of <typeparamref name="ENTITY"/> type.</para>
     /// </summary>
-    /// <param name="connection">Database connection object, internaly used for performing of SQL queries. Connection must be in open state. Proper closing and life cycle management of this connection is up to external calling code.</param>
+    /// <param name="connectionString">Connection string, used for creating <see cref="IDbConnection"/> object internally.</param>
+    /// <exception cref="ArgumentNullException">If <paramref name="connectionString"/> is a <c>null</c> reference.</exception>
+    /// <exception cref="ArgumentException">If <paramref name="connectionString"/> is <see cref="string.Empty"/> string.</exception>
+    public LinqToSqlRepository(string connectionString)
+    {
+      Assertion.NotEmpty(connectionString);
+
+      this.dataContext = new DataContext(connectionString);
+      this.ownsConnection = true;
+    }
+
+    /// <summary>
+    ///   <para>Creates new instance of LinqToSQL ORM repository that works with mapped entities of <typeparamref name="ENTITY"/> type.</para>
+    /// </summary>
+    /// <param name="connection">Shared database connection object, internaly used for performing of SQL queries. Connection must be in open state. Proper closing and life cycle management of this connection is up to external calling code.</param>
     /// <exception cref="ArgumentNullException">If <paramref name="connection"/> is a <c>null</c> reference.</exception>
     public LinqToSqlRepository(IDbConnection connection)
     {
       Assertion.NotNull(connection);
+
+      if (connection.State == ConnectionState.Broken || connection.State == ConnectionState.Closed)
+      {
+        connection.Open();
+      }
 
       this.dataContext = new DataContext(connection);
     }
@@ -116,6 +138,30 @@ namespace Catharsis.Repository
     }
 
     /// <summary>
+    ///   <para>Implementation of <see cref="IQueryable{ENTITY}.Expression"/> property.</para>
+    /// </summary>
+    public override Expression Expression
+    {
+      get { return this.DataContext.GetTable<ENTITY>().AsQueryable().Expression; }
+    }
+
+    /// <summary>
+    ///   <para>Implementation of <see cref="IQueryable{ENTITY}.ElementType"/> property.</para>
+    /// </summary>
+    public override Type ElementType
+    {
+      get { return this.DataContext.GetTable<ENTITY>().AsQueryable().ElementType; }
+    }
+
+    /// <summary>
+    ///   <para>Implementation of <see cref="IQueryable{ENTITY}.Provider"/> property.</para>
+    /// </summary>
+    public override IQueryProvider Provider
+    {
+      get { return this.DataContext.GetTable<ENTITY>().AsQueryable().Provider; }
+    }
+
+    /// <summary>
     ///   <para>Allows direct access to LINQ to SQL <see cref="DataContext"/> instance.</para>
     /// </summary>
     public DataContext DataContext
@@ -125,6 +171,11 @@ namespace Catharsis.Repository
 
     protected override void OnDisposing()
     {
+      if (this.ownsConnection)
+      {
+        this.DataContext.Connection.Dispose();
+      }
+
       this.DataContext.Dispose();
     }
   }

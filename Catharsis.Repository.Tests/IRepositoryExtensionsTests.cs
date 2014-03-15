@@ -9,10 +9,14 @@ namespace Catharsis.Repository
   public sealed class IRepositoryExtensionsTests
   {
     /// <summary>
-    ///   <para>Performs testing of <see cref="IRepositoryExtensions.Transaction{ENTITY}(IRepository{ENTITY}, Action)"/> method.</para>
+    ///   <para>Performs testing of following methods :</para>
+    ///   <list type="bullet">
+    ///     <item><description><see cref="IRepositoryExtensions.Transaction{ENTITY}(IRepository{ENTITY}, Action)"/></description></item>
+    ///     <item><description><see cref="IRepositoryExtensions.Transaction{ENTITY}(IRepository{ENTITY}, Action{IRepository{ENTITY}})"/></description></item>
+    ///   </list>
     /// </summary>
     [Fact]
-    public void Transaction_Method()
+    public void Transaction_Methods()
     {
       Assert.Throws<ArgumentNullException>(() => IRepositoryExtensions.Transaction<object>(null, () => { }));
       Assert.Throws<ArgumentNullException>(() => new MemoryRepository<MockEntity>().Transaction((Action) null));
@@ -21,6 +25,13 @@ namespace Catharsis.Repository
       using (var repository = new MockRepository<MockEntity>())
       {
         Assert.True(ReferenceEquals(repository.Transaction(() => counter++), repository));
+      }
+      Assert.Equal(1, counter);
+
+      counter = 0;
+      using (var repository = new MockRepository<MockEntity>())
+      {
+        Assert.True(ReferenceEquals(repository.Transaction(x => counter++), repository));
       }
       Assert.Equal(1, counter);
     }

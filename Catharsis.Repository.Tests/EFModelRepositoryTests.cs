@@ -164,6 +164,8 @@ namespace Catharsis.Repository
         entity = repository.Single();
         Assert.NotEqual(0, entity.Id);
         Assert.Equal("second", entity.Name);
+        Assert.Equal(1, repository.Count(x => x.Name == "second"));
+        Assert.Equal("second", repository.Single(x => x.Name == "second").Name);
       }
     }
 

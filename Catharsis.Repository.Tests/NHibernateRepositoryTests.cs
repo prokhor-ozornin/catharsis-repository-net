@@ -182,6 +182,8 @@ namespace Catharsis.Repository
         entity = repository.Single();
         Assert.NotEqual(0, entity.Id);
         Assert.Equal("second", entity.Name);
+        Assert.Equal(1, repository.Count(x => x.Name == "second"));
+        Assert.Equal("second", repository.Single(x => x.Name == "second").Name);
       }
     }
 
@@ -301,7 +303,7 @@ namespace Catharsis.Repository
     {
       using (var repository = new NHibernateRepository<MockEntity>(this.configuration))
       {
-        Assert.Equal(repository.Session.Linq<MockEntity>().Expression.ToString(), repository.Expression.ToString());
+        Assert.Equal(repository.Session.Query<MockEntity>().Expression.ToString(), repository.Expression.ToString());
       }
     }
 
@@ -313,7 +315,7 @@ namespace Catharsis.Repository
     {
       using (var repository = new NHibernateRepository<MockEntity>(this.configuration))
       {
-        Assert.True(ReferenceEquals(repository.Session.Linq<MockEntity>().ElementType, repository.ElementType));
+        Assert.True(ReferenceEquals(repository.Session.Query<MockEntity>().ElementType, repository.ElementType));
       }
     }
 
@@ -325,7 +327,7 @@ namespace Catharsis.Repository
     {
       using (var repository = new NHibernateRepository<MockEntity>(this.configuration))
       {
-        Assert.Equal(repository.Session.Linq<MockEntity>().Provider.ToString(), repository.Provider.ToString());
+        Assert.Equal(repository.Session.Query<MockEntity>().Provider.ToString(), repository.Provider.ToString());
       }
     }
 

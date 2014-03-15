@@ -65,7 +65,7 @@ namespace Catharsis.Repository
     /// <returns>Enumerator for iteration through repository's data.</returns>
     public override IEnumerator<ENTITY> GetEnumerator()
     {
-      return this.Session.Linq<ENTITY>().GetEnumerator();
+      return this.Session.Query<ENTITY>().GetEnumerator();
     }
 
     /// <summary>
@@ -151,7 +151,7 @@ namespace Catharsis.Repository
     /// </summary>
     public override Expression Expression
     {
-      get { return this.Session.Linq<ENTITY>().Expression; }
+      get { return this.Session.Query<ENTITY>().Expression; }
     }
 
     /// <summary>
@@ -159,7 +159,7 @@ namespace Catharsis.Repository
     /// </summary>
     public override Type ElementType
     {
-      get { return this.Session.Linq<ENTITY>().ElementType; }
+      get { return this.Session.Query<ENTITY>().ElementType; }
     }
 
     /// <summary>
@@ -167,7 +167,7 @@ namespace Catharsis.Repository
     /// </summary>
     public override IQueryProvider Provider
     {
-      get { return this.Session.Linq<ENTITY>().Provider; }
+      get { return this.Session.Query<ENTITY>().Provider; }
     }
 
     /// <summary>

@@ -15,14 +15,21 @@ namespace Catharsis.Repository
     /// </summary>
     /// <typeparam name="ENTITY">Type of business entity.</typeparam>
     /// <param name="entity">Entity to be deleted.</param>
+    /// <param name="commit"><c>true</c> to perform immedial commit (<see cref="IRepository{ENTITY}.Commit()"/>) and persist changes, <c>false</c> to leave this task to external code.</param>
     /// <returns>Back reference to the current entity.</returns>
     /// <exception cref="ArgumentNullException">If <paramref name="entity"/> is a <c>null</c> reference.</exception>
     /// <seealso cref="IRepository{ENTITY}.Delete(ENTITY)"/>
-    public static ENTITY Delete<ENTITY>(this ENTITY entity) where ENTITY : class
+    public static ENTITY Delete<ENTITY>(this ENTITY entity, bool commit = true) where ENTITY : class
     {
       Assertion.NotNull(entity);
 
-      Repository.For<ENTITY>().Delete(entity);
+      var repository = Repository.For<ENTITY>();
+      repository.Delete(entity);
+      if (commit)
+      {
+        repository.Commit();
+      }
+
       return entity;
     }
 
@@ -32,14 +39,21 @@ namespace Catharsis.Repository
     /// </summary>
     /// <typeparam name="ENTITY">Type of business entity.</typeparam>
     /// <param name="entity">Entity to be persisted (added/updated).</param>
+    /// <param name="commit"><c>true</c> to perform immedial commit (<see cref="IRepository{ENTITY}.Commit()"/>) and persist changes, <c>false</c> to leave this task to external code.</param>
     /// <returns>Back reference to the current entity.</returns>
     /// <exception cref="ArgumentNullException">If <paramref name="entity"/> is a <c>null</c> reference.</exception>
     /// <seealso cref="IRepository{ENTITY}.Persist(ENTITY)"/>
-    public static ENTITY Persist<ENTITY>(this ENTITY entity) where ENTITY : class
+    public static ENTITY Persist<ENTITY>(this ENTITY entity, bool commit = true) where ENTITY : class
     {
       Assertion.NotNull(entity);
 
-      Repository.For<ENTITY>().Persist(entity);
+      var repository = Repository.For<ENTITY>();
+      repository.Persist(entity);
+      if (commit)
+      {
+        repository.Commit();
+      }
+
       return entity;
     }
 
@@ -49,14 +63,21 @@ namespace Catharsis.Repository
     /// </summary>
     /// <typeparam name="ENTITY">Type of business entity.</typeparam>
     /// <param name="entity">Entity whose state is to be restored.</param>
+    /// <param name="commit"><c>true</c> to perform immedial commit (<see cref="IRepository{ENTITY}.Commit()"/>) and persist changes, <c>false</c> to leave this task to external code.</param>
     /// <returns>Back reference to the current entity.</returns>
     /// <exception cref="ArgumentNullException">If <paramref name="entity"/> is a <c>null</c> reference.</exception>
     /// <seealso cref="IRepository{ENTITY}.Refresh(ENTITY)"/>
-    public static ENTITY Refresh<ENTITY>(this ENTITY entity) where ENTITY : class
+    public static ENTITY Refresh<ENTITY>(this ENTITY entity, bool commit = true) where ENTITY : class
     {
       Assertion.NotNull(entity);
 
-      Repository.For<ENTITY>().Refresh(entity);
+      var repository = Repository.For<ENTITY>();
+      repository.Refresh(entity);
+      if (commit)
+      {
+        repository.Commit();
+      }
+
       return entity;
     }
   }

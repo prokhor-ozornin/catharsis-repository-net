@@ -18,12 +18,12 @@ namespace Catharsis.Repository
     [Fact]
     public void For_Method()
     {
-      Assert.Throws<InvalidOperationException>(() => Repository.For<MockEntity>());
+      Assert.Throws<InvalidOperationException>(() => Repository.For<TestEntity>());
 
       ServiceLocator.SetLocatorProvider(() => this.serviceLocator);
 
-      Assert.NotNull(Repository.For<MockEntity>());
-      Assert.True(ReferenceEquals(Repository.For<MockEntity>(), Repository.For<MockEntity>()));
+      Assert.NotNull(Repository.For<TestEntity>());
+      Assert.True(ReferenceEquals(Repository.For<TestEntity>(), Repository.For<TestEntity>()));
     }
 
     public void Dispose()

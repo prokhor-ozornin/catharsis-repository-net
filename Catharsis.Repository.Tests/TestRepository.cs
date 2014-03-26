@@ -6,7 +6,7 @@ using System.Linq.Expressions;
 
 namespace Catharsis.Repository
 {
-  internal sealed class MockRepository<ENTITY> : RepositoryBase<ENTITY> where ENTITY : class
+  internal sealed class TestRepository<ENTITY> : RepositoryBase<ENTITY> where ENTITY : class
   {
     public override IEnumerator<ENTITY> GetEnumerator()
     {
@@ -40,7 +40,7 @@ namespace Catharsis.Repository
 
     public override ITransaction Transaction(IsolationLevel? isolation = null)
     {
-      return new MockTransaction(isolation);
+      return new TestTransaction(isolation);
     }
 
     public override Expression Expression

@@ -25,13 +25,13 @@ namespace Catharsis.Repository
     [Fact]
     public void Constructors()
     {
-      Assert.Throws<ArgumentNullException>(() => new NHibernateRepository<MockEntity>((ISessionFactory) null));
-      Assert.Throws<ArgumentNullException>(() => new NHibernateRepository<MockEntity>((Configuration)null));
+      Assert.Throws<ArgumentNullException>(() => new NHibernateRepository<TestEntity>((ISessionFactory) null));
+      Assert.Throws<ArgumentNullException>(() => new NHibernateRepository<TestEntity>((Configuration)null));
 
       using (var sessionFactory = this.configuration.BuildSessionFactory())
       {
         var session = sessionFactory.OpenSession();
-        using (var repository = new NHibernateRepository<MockEntity>(session))
+        using (var repository = new NHibernateRepository<TestEntity>(session))
         {
           Assert.True(ReferenceEquals(sessionFactory, session.SessionFactory));
           Assert.Equal(FlushMode.Never, session.FlushMode);
@@ -39,7 +39,7 @@ namespace Catharsis.Repository
         }
         session.Dispose();
 
-        using (var repository = new NHibernateRepository<MockEntity>(sessionFactory))
+        using (var repository = new NHibernateRepository<TestEntity>(sessionFactory))
         {
           session = repository.Session;
           Assert.True(ReferenceEquals(sessionFactory, session.SessionFactory));
@@ -47,7 +47,7 @@ namespace Catharsis.Repository
           Assert.True(repository.Field("ownsSession").To<bool>());
         }
 
-        using (var repository = new NHibernateRepository<MockEntity>(this.configuration))
+        using (var repository = new NHibernateRepository<TestEntity>(this.configuration))
         {
           session = repository.Session;
           Assert.False(ReferenceEquals(sessionFactory, session.SessionFactory));
@@ -63,9 +63,9 @@ namespace Catharsis.Repository
     [Fact]
     public void Commit_Method()
     {
-      var entity = new MockEntity();
+      var entity = new TestEntity();
 
-      using (var repository = new NHibernateRepository<MockEntity>(this.configuration))
+      using (var repository = new NHibernateRepository<TestEntity>(this.configuration))
       {
         Assert.False(repository.Any());
 
@@ -86,16 +86,16 @@ namespace Catharsis.Repository
     [Fact]
     public void Delete_Method()
     {
-      Assert.Throws<ArgumentNullException>(() => new NHibernateRepository<MockEntity>(this.configuration).Delete(null));
+      Assert.Throws<ArgumentNullException>(() => new NHibernateRepository<TestEntity>(this.configuration).Delete(null));
 
-      var entity = new MockEntity();
+      var entity = new TestEntity();
 
-      using (var repository = new NHibernateRepository<MockEntity>(this.configuration))
+      using (var repository = new NHibernateRepository<TestEntity>(this.configuration))
       {
         repository.Transaction(() => Assert.True(ReferenceEquals(repository.Delete(entity), repository)));
         
         repository.Transaction(() => repository.Persist(entity));
-        repository.Transaction(() => repository.Delete(new MockEntity()));
+        repository.Transaction(() => repository.Delete(new TestEntity()));
         Assert.True(ReferenceEquals(repository.Single(), entity));
         
         repository.Transaction(() => repository.Delete(entity));
@@ -109,12 +109,12 @@ namespace Catharsis.Repository
     [Fact]
     public void DeleteAll_Method()
     {
-      using (var repository = new NHibernateRepository<MockEntity>(this.configuration))
+      using (var repository = new NHibernateRepository<TestEntity>(this.configuration))
       {
         repository.Transaction(() => Assert.True(ReferenceEquals(repository.DeleteAll(), repository)));
         Assert.False(repository.Any());
         
-        repository.Transaction(() => repository.Persist(new MockEntity()).Persist(new MockEntity()));
+        repository.Transaction(() => repository.Persist(new TestEntity()).Persist(new TestEntity()));
         Assert.Equal(2, repository.Count());
 
         repository.Transaction(() => repository.DeleteAll());
@@ -128,9 +128,9 @@ namespace Catharsis.Repository
     [Fact]
     public void Dispose_Method()
     {
-      var entity = new MockEntity();
+      var entity = new TestEntity();
 
-      using (var repository = new NHibernateRepository<MockEntity>(this.configuration))
+      using (var repository = new NHibernateRepository<TestEntity>(this.configuration))
       {
         repository.Persist(entity).Dispose();
         Assert.Throws<ObjectDisposedException>(() => repository.Single());
@@ -145,9 +145,9 @@ namespace Catharsis.Repository
     [Fact]
     public void GetEnumerator_Method()
     {
-      var entity = new MockEntity();
+      var entity = new TestEntity();
 
-      using (var repository = new NHibernateRepository<MockEntity>(this.configuration))
+      using (var repository = new NHibernateRepository<TestEntity>(this.configuration))
       {
         Assert.False(repository.GetEnumerator().MoveNext());
 
@@ -164,11 +164,11 @@ namespace Catharsis.Repository
     [Fact]
     public void Persist_Method()
     {
-      Assert.Throws<ArgumentNullException>(() => new NHibernateRepository<MockEntity>(this.configuration).Persist(null));
+      Assert.Throws<ArgumentNullException>(() => new NHibernateRepository<TestEntity>(this.configuration).Persist(null));
 
-      var entity = new MockEntity { Name = "first" };
+      var entity = new TestEntity { Name = "first" };
 
-      using (var repository = new NHibernateRepository<MockEntity>(this.configuration))
+      using (var repository = new NHibernateRepository<TestEntity>(this.configuration))
       {
         Assert.False(repository.Any());
 
@@ -193,11 +193,11 @@ namespace Catharsis.Repository
     [Fact]
     public void Refresh_Method()
     {
-      Assert.Throws<ArgumentNullException>(() => new NHibernateRepository<MockEntity>(this.configuration).Refresh(null));
+      Assert.Throws<ArgumentNullException>(() => new NHibernateRepository<TestEntity>(this.configuration).Refresh(null));
 
-      var entity = new MockEntity { Name = "first" };
+      var entity = new TestEntity { Name = "first" };
 
-      using (var repository = new NHibernateRepository<MockEntity>(this.configuration))
+      using (var repository = new NHibernateRepository<TestEntity>(this.configuration))
       {
         Assert.True(ReferenceEquals(repository.Refresh(entity), repository));
         Assert.Equal(0, entity.Id);
@@ -220,19 +220,19 @@ namespace Catharsis.Repository
     [Fact]
     public void Transaction_Method()
     {
-      var entity = new MockEntity();
+      var entity = new TestEntity();
 
-      using (var repository = new NHibernateRepository<MockEntity>(this.configuration))
+      using (var repository = new NHibernateRepository<TestEntity>(this.configuration))
       {
         using (repository.Transaction())
         {
-          repository.Persist(new MockEntity());
+          repository.Persist(new TestEntity());
         }
         Assert.Equal(0, repository.Count());
 
         using (var transaction = repository.Transaction())
         {
-          repository.Persist(new MockEntity());
+          repository.Persist(new TestEntity());
           transaction.Rollback();
         }
         Assert.Equal(0, repository.Count());
@@ -241,7 +241,7 @@ namespace Catharsis.Repository
         {
           using (repository.Transaction())
           {
-            repository.Persist(new MockEntity());
+            repository.Persist(new TestEntity());
             throw new Exception();
           }
         }
@@ -301,9 +301,9 @@ namespace Catharsis.Repository
     [Fact]
     public void Expression_Property()
     {
-      using (var repository = new NHibernateRepository<MockEntity>(this.configuration))
+      using (var repository = new NHibernateRepository<TestEntity>(this.configuration))
       {
-        Assert.Equal(repository.Session.Query<MockEntity>().Expression.ToString(), repository.Expression.ToString());
+        Assert.Equal(repository.Session.Query<TestEntity>().Expression.ToString(), repository.Expression.ToString());
       }
     }
 
@@ -313,9 +313,9 @@ namespace Catharsis.Repository
     [Fact]
     public void ElementType_Property()
     {
-      using (var repository = new NHibernateRepository<MockEntity>(this.configuration))
+      using (var repository = new NHibernateRepository<TestEntity>(this.configuration))
       {
-        Assert.True(ReferenceEquals(repository.Session.Query<MockEntity>().ElementType, repository.ElementType));
+        Assert.True(ReferenceEquals(repository.Session.Query<TestEntity>().ElementType, repository.ElementType));
       }
     }
 
@@ -325,15 +325,15 @@ namespace Catharsis.Repository
     [Fact]
     public void Provider_Property()
     {
-      using (var repository = new NHibernateRepository<MockEntity>(this.configuration))
+      using (var repository = new NHibernateRepository<TestEntity>(this.configuration))
       {
-        Assert.Equal(repository.Session.Query<MockEntity>().Provider.ToString(), repository.Provider.ToString());
+        Assert.Equal(repository.Session.Query<TestEntity>().Provider.ToString(), repository.Provider.ToString());
       }
     }
 
     public void Dispose()
     {
-      using (var repository = new NHibernateRepository<MockEntity>(this.configuration))
+      using (var repository = new NHibernateRepository<TestEntity>(this.configuration))
       {
         repository.DeleteAll().Commit();
       }

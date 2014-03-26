@@ -19,17 +19,17 @@ namespace Catharsis.Repository
     [Fact]
     public void Delete_Method()
     {
-      Assert.Throws<ArgumentNullException>(() => ObjectExtensions.Delete<MockEntity>(null));
-      Assert.Throws<InvalidOperationException>(() => ServiceLocator.Current.GetInstance<IRepository<MockEntity>>());
+      Assert.Throws<ArgumentNullException>(() => ObjectExtensions.Delete<TestEntity>(null));
+      Assert.Throws<InvalidOperationException>(() => ServiceLocator.Current.GetInstance<IRepository<TestEntity>>());
 
       ServiceLocator.SetLocatorProvider(() => this.serviceLocator);
 
-      var entity = new MockEntity();
-      using (var repository = ServiceLocator.Current.GetInstance<IRepository<MockEntity>>())
+      var entity = new TestEntity();
+      using (var repository = ServiceLocator.Current.GetInstance<IRepository<TestEntity>>())
       {
         repository.Transaction(() => Assert.True(ReferenceEquals(entity.Delete(), entity)));
         repository.Transaction(() => entity.Persist());
-        repository.Transaction(() => new MockEntity().Delete());
+        repository.Transaction(() => new TestEntity().Delete());
         Assert.True(ReferenceEquals(repository.Single(), entity));
 
         repository.Transaction(() => entity.Delete());
@@ -43,13 +43,13 @@ namespace Catharsis.Repository
     [Fact]
     public void Persist_Method()
     {
-      Assert.Throws<ArgumentNullException>(() => ObjectExtensions.Persist<MockEntity>(null));
-      Assert.Throws<InvalidOperationException>(() => ServiceLocator.Current.GetInstance<IRepository<MockEntity>>());
+      Assert.Throws<ArgumentNullException>(() => ObjectExtensions.Persist<TestEntity>(null));
+      Assert.Throws<InvalidOperationException>(() => ServiceLocator.Current.GetInstance<IRepository<TestEntity>>());
 
       ServiceLocator.SetLocatorProvider(() => this.serviceLocator);
 
-      var entity = new MockEntity { Name = "first" };
-      using (var repository = ServiceLocator.Current.GetInstance<IRepository<MockEntity>>())
+      var entity = new TestEntity { Name = "first" };
+      using (var repository = ServiceLocator.Current.GetInstance<IRepository<TestEntity>>())
       {
         Assert.False(repository.Any());
 
@@ -72,13 +72,13 @@ namespace Catharsis.Repository
     [Fact]
     public void Refresh_Method()
     {
-      Assert.Throws<ArgumentNullException>(() => ObjectExtensions.Refresh<MockEntity>(null));
-      Assert.Throws<InvalidOperationException>(() => ServiceLocator.Current.GetInstance<IRepository<MockEntity>>());
+      Assert.Throws<ArgumentNullException>(() => ObjectExtensions.Refresh<TestEntity>(null));
+      Assert.Throws<InvalidOperationException>(() => ServiceLocator.Current.GetInstance<IRepository<TestEntity>>());
 
       ServiceLocator.SetLocatorProvider(() => this.serviceLocator);
 
-      var entity = new MockEntity { Name = "first" };
-      using (var repository = ServiceLocator.Current.GetInstance<IRepository<MockEntity>>())
+      var entity = new TestEntity { Name = "first" };
+      using (var repository = ServiceLocator.Current.GetInstance<IRepository<TestEntity>>())
       {
         Assert.True(ReferenceEquals(entity.Refresh(), entity));
         Assert.Equal(0, entity.Id);

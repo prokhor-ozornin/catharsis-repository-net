@@ -6,9 +6,9 @@
     <edmx:StorageModels>
       <Schema Namespace="Catharsis.Repository.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
         <EntityContainer Name="CatharsisRepositoryStoreContainer">
-          <EntitySet Name="MockEntity" EntityType="Catharsis.Repository.Store.MockEntity" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="EFModelEntity" EntityType="Catharsis.Repository.Store.EFModelEntity" store:Type="Tables" Schema="dbo" />
         </EntityContainer>
-        <EntityType Name="MockEntity">
+        <EntityType Name="EFModelEntity">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
@@ -21,9 +21,9 @@
     <edmx:ConceptualModels>
       <Schema Namespace="Catharsis.Repository" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
         <EntityContainer Name="Entities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="MockEntity" EntityType="Catharsis.Repository.MockEntity" />
+          <EntitySet Name="EFModelEntity" EntityType="Catharsis.Repository.EFModelEntity" />
         </EntityContainer>
-        <EntityType Name="MockEntity">
+        <EntityType Name="EFModelEntity">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
@@ -36,9 +36,9 @@
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="CatharsisRepositoryStoreContainer" CdmEntityContainer="Entities">
-          <EntitySetMapping Name="MockEntity">
-            <EntityTypeMapping TypeName="Catharsis.Repository.MockEntity">
-              <MappingFragment StoreEntitySet="MockEntity">
+          <EntitySetMapping Name="EFModelEntity">
+            <EntityTypeMapping TypeName="Catharsis.Repository.EFModelEntity">
+              <MappingFragment StoreEntitySet="EFModelEntity">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
               </MappingFragment>
@@ -65,7 +65,7 @@
     <!-- Diagram content (shape and connector positions) -->
     <Diagrams>
       <Diagram Name="Model">
-        <EntityTypeShape EntityType="Catharsis.Repository.MockEntity" Width="1.5" PointX="0.75" PointY="0.75" Height="1.4033821614583331" IsExpanded="true" />
+        <EntityTypeShape EntityType="Catharsis.Repository.EFModelEntity" Width="1.5" PointX="0.75" PointY="0.75" Height="1.4033821614583331" IsExpanded="true" />
       </Diagram>
     </Diagrams>
   </Designer>

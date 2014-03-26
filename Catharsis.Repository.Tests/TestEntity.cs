@@ -4,7 +4,7 @@ using System.Data.Linq.Mapping;
 namespace Catharsis.Repository
 {
   [Table]
-  internal class MockEntity
+  internal class TestEntity
   {
     [Column(IsPrimaryKey = true, IsDbGenerated = true)]
     [Key]

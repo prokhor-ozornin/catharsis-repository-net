@@ -14,19 +14,19 @@ The following ORM frameworks are supported at this time :
 
 This library helps you to deal with diversity and complexity of different API for these frameworks, providing most widely useful functionality through `IRepository<ENTITY>` interface :
 
-> public interface IRepository<ENTITY> : IDisposable, IEnumerable<ENTITY> where ENTITY : class
+> public interface IRepository < ENTITY > : IDisposable, IQueryable < ENTITY > where ENTITY : class
 >
 > {
 >
->   IRepository<ENTITY> Commit();
+>   IRepository < ENTITY > Commit();
 
->   IRepository<ENTITY> Delete(ENTITY entity);
+>   IRepository < ENTITY > Delete(ENTITY entity);
 
->   IRepository<ENTITY> DeleteAll();
+>   IRepository < ENTITY > DeleteAll();
 
->   IRepository<ENTITY> Persist(ENTITY entity);
+>   IRepository < ENTITY > Persist(ENTITY entity);
 
->   IRepository<ENTITY> Refresh(ENTITY entity);
+>   IRepository < ENTITY > Refresh(ENTITY entity);
 
 >   ITransaction Transaction(IsolationLevel? isolation = null);
 >
@@ -34,13 +34,56 @@ This library helps you to deal with diversity and complexity of different API fo
 
 Concrete implementations are provided as well :
 
-1. NHibernate : NHibernateRepository
-2. LINQ2SQL : LinqToSqlRepository
-3. Entity Framework (Database-First) : EFModelRepository
-4. Entity Framework (Code-First) : EFCodeFirstRepository
-5. MemoryRepository
+1. **NHibernate**: `NHibernateRepository`
+2. **LINQ2SQL**: `LinqToSqlRepository`
+3. **Entity Framework (Database-First)** : `EFModelRepository`
+4. **Entity Framework (Code-First)** : `EFCodeFirstRepository`
+5. `MemoryRepository`
 
-## Usage examples :
-TBD
+**Usage examples :**
+
+**NHibernateRepository**
+
+You can create `NHibernateRepository<ENTITY>` generic class instance by passing to its constructor either :
+
+1. `ISession`
+2. `ISessionFactory`
+3. `IConfiguration`
+
+Use first option to share single long-running session (as well as its cache) by different instances of repositories (for different types of business entities), or either second or third to create short-living session which will be internally managed by the repository and be closed when `NHibernateRepository<ENTITY>.Dispose()` method is called.
+
+To commit performed changes use either `NHibernateRepository<ENTITY>.Commit()` method, or create a transactional block.
+
+Querying is performed as usual for `IQueryable<T>` objects.
+
+> var putin = new Person { Name = "Putin" };
+>
+> var medvedev = new Person { Name = "Medvedev" };
+>
+> var obama = new Person { Name = "Obama" };
+>
+> IConfiguration configuration = ...
+>
+> using (var repository = new NHibernateRepository < Person > (configuration))
+>
+> {
+>
+>   repository.Persist(putin).Persist(medvedev).Persist(obama).Commit(); // Persist three entities and commit changes
+>
+>   repository.Transaction(() => repository.Delete(obama)); // Delete entity inside a transaction, commit changes automatically
+>
+> var putin = repository.FirstOrDefault(person => person.Name == "Putin");
+> 
+> var obama = repository.FirstOrDefault(person => person.Name == "Obama");
+>
+> if (repository.Any(person => person.Name == "Medvedev"))
+>
+> { // Baby-bear always near } 
+>
+> if (putin != null && obama == null)
+>
+> { // No Obama ? Let us cheer ! }
+>
+> }
 
 Code is well commented, refer to XML docs for more details.

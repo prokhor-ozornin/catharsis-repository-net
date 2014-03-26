@@ -19,17 +19,17 @@ namespace Catharsis.Repository
     public void Transaction_Methods()
     {
       Assert.Throws<ArgumentNullException>(() => IRepositoryExtensions.Transaction<object>(null, () => { }));
-      Assert.Throws<ArgumentNullException>(() => new MemoryRepository<MockEntity>().Transaction((Action) null));
+      Assert.Throws<ArgumentNullException>(() => new MemoryRepository<TestEntity>().Transaction((Action) null));
 
       var counter = 0;
-      using (var repository = new MockRepository<MockEntity>())
+      using (var repository = new TestRepository<TestEntity>())
       {
         Assert.True(ReferenceEquals(repository.Transaction(() => counter++), repository));
       }
       Assert.Equal(1, counter);
 
       counter = 0;
-      using (var repository = new MockRepository<MockEntity>())
+      using (var repository = new TestRepository<TestEntity>())
       {
         Assert.True(ReferenceEquals(repository.Transaction(x => counter++), repository));
       }

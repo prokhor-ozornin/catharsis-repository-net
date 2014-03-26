@@ -2,7 +2,7 @@
 
 namespace Catharsis.Repository
 {
-  internal sealed class MockEntityNHibernateMapping : ClassMap<MockEntity>
+  internal sealed class MockEntityNHibernateMapping : ClassMap<TestEntity>
   {
     public MockEntityNHibernateMapping()
     {

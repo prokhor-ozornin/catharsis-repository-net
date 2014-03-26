@@ -23,11 +23,11 @@ namespace Catharsis.Repository
     [Fact]
     public void Constructors()
     {
-      Assert.Throws<ArgumentNullException>(() => new LinqToSqlRepository<MockEntity>((string)null));
-      Assert.Throws<ArgumentException>(() => new LinqToSqlRepository<MockEntity>(string.Empty));
-      Assert.Throws<ArgumentNullException>(() => new LinqToSqlRepository<MockEntity>((IDbConnection)null));
+      Assert.Throws<ArgumentNullException>(() => new LinqToSqlRepository<TestEntity>((string)null));
+      Assert.Throws<ArgumentException>(() => new LinqToSqlRepository<TestEntity>(string.Empty));
+      Assert.Throws<ArgumentNullException>(() => new LinqToSqlRepository<TestEntity>((IDbConnection)null));
 
-      using (var repository = new LinqToSqlRepository<MockEntity>(this.connectionString))
+      using (var repository = new LinqToSqlRepository<TestEntity>(this.connectionString))
       {
         Assert.Equal(ConnectionState.Closed, repository.DataContext.Connection.State);
         Assert.True(repository.Field("ownsConnection").To<bool>());
@@ -35,7 +35,7 @@ namespace Catharsis.Repository
 
       using (var connection = this.Connection())
       {
-        using (var repository = new LinqToSqlRepository<MockEntity>(connection))
+        using (var repository = new LinqToSqlRepository<TestEntity>(connection))
         {
           Assert.True(ReferenceEquals(repository.DataContext.Connection, connection));
           Assert.False(repository.Field("ownsConnection").To<bool>());
@@ -50,9 +50,9 @@ namespace Catharsis.Repository
     [Fact]
     public void Commit_Method()
     {
-      var entity = new MockEntity();
+      var entity = new TestEntity();
 
-      using (var repository = new LinqToSqlRepository<MockEntity>(this.Connection()))
+      using (var repository = new LinqToSqlRepository<TestEntity>(this.Connection()))
       {
         Assert.False(repository.Any());
 
@@ -73,11 +73,11 @@ namespace Catharsis.Repository
     [Fact]
     public void Delete_Method()
     {
-      Assert.Throws<ArgumentNullException>(() => new LinqToSqlRepository<MockEntity>(this.Connection()).Delete(null));
+      Assert.Throws<ArgumentNullException>(() => new LinqToSqlRepository<TestEntity>(this.Connection()).Delete(null));
 
-      var entity = new MockEntity();
+      var entity = new TestEntity();
 
-      using (var repository = new LinqToSqlRepository<MockEntity>(this.Connection()))
+      using (var repository = new LinqToSqlRepository<TestEntity>(this.Connection()))
       {
         Assert.Throws<InvalidOperationException>(() => repository.Delete(entity));
         Assert.False(repository.Persist(entity).Delete(entity).Commit().Any());
@@ -90,12 +90,12 @@ namespace Catharsis.Repository
     [Fact]
     public void DeleteAll_Method()
     {
-      using (var repository = new LinqToSqlRepository<MockEntity>(this.Connection()))
+      using (var repository = new LinqToSqlRepository<TestEntity>(this.Connection()))
       {
         Assert.True(ReferenceEquals(repository.DeleteAll(), repository));
         Assert.False(repository.Commit().Any());
 
-        repository.Persist(new MockEntity()).Persist(new MockEntity());
+        repository.Persist(new TestEntity()).Persist(new TestEntity());
         Assert.Equal(2, repository.Commit().Count());
 
         repository.DeleteAll();
@@ -109,9 +109,9 @@ namespace Catharsis.Repository
     [Fact]
     public void Dispose_Method()
     {
-      var entity = new MockEntity();
+      var entity = new TestEntity();
 
-      using (var repository = new LinqToSqlRepository<MockEntity>(this.Connection()))
+      using (var repository = new LinqToSqlRepository<TestEntity>(this.Connection()))
       {
         repository.Persist(entity).Dispose();
         Assert.Throws<ObjectDisposedException>(() => repository.Single());
@@ -126,9 +126,9 @@ namespace Catharsis.Repository
     [Fact]
     public void GetEnumerator_Method()
     {
-      var entity = new MockEntity();
+      var entity = new TestEntity();
 
-      using (var repository = new LinqToSqlRepository<MockEntity>(this.Connection()))
+      using (var repository = new LinqToSqlRepository<TestEntity>(this.Connection()))
       {
         Assert.False(repository.GetEnumerator().MoveNext());
 
@@ -145,11 +145,11 @@ namespace Catharsis.Repository
     [Fact]
     public void Persist_Method()
     {
-      Assert.Throws<ArgumentNullException>(() => new LinqToSqlRepository<MockEntity>(this.Connection()).Persist(null));
+      Assert.Throws<ArgumentNullException>(() => new LinqToSqlRepository<TestEntity>(this.Connection()).Persist(null));
 
-      var entity = new MockEntity { Name = "first" };
+      var entity = new TestEntity { Name = "first" };
 
-      using (var repository = new LinqToSqlRepository<MockEntity>(this.Connection()))
+      using (var repository = new LinqToSqlRepository<TestEntity>(this.Connection()))
       {
         Assert.False(repository.Any());
 
@@ -175,11 +175,11 @@ namespace Catharsis.Repository
     [Fact]
     public void Refresh_Method()
     {
-      Assert.Throws<ArgumentNullException>(() => new LinqToSqlRepository<MockEntity>(this.Connection()).Refresh(null));
+      Assert.Throws<ArgumentNullException>(() => new LinqToSqlRepository<TestEntity>(this.Connection()).Refresh(null));
 
-      var entity = new MockEntity { Name = "first" };
+      var entity = new TestEntity { Name = "first" };
 
-      using (var repository = new LinqToSqlRepository<MockEntity>(this.Connection()))
+      using (var repository = new LinqToSqlRepository<TestEntity>(this.Connection()))
       {
         Assert.Throws<ArgumentException>(() => repository.Refresh(entity));
 
@@ -200,7 +200,7 @@ namespace Catharsis.Repository
     [Fact]
     public void Transaction_Method()
     {
-      using (var repository = new LinqToSqlRepository<MockEntity>(this.Connection()))
+      using (var repository = new LinqToSqlRepository<TestEntity>(this.Connection()))
       {
         Assert.NotNull(repository.Transaction());
       }
@@ -212,9 +212,9 @@ namespace Catharsis.Repository
     [Fact]
     public void Expression_Property()
     {
-      using (var repository = new LinqToSqlRepository<MockEntity>(this.Connection()))
+      using (var repository = new LinqToSqlRepository<TestEntity>(this.Connection()))
       {
-        Assert.Equal(repository.DataContext.GetTable<MockEntity>().AsQueryable().Expression.ToString(), repository.Expression.ToString());
+        Assert.Equal(repository.DataContext.GetTable<TestEntity>().AsQueryable().Expression.ToString(), repository.Expression.ToString());
       }
     }
 
@@ -224,9 +224,9 @@ namespace Catharsis.Repository
     [Fact]
     public void ElementType_Property()
     {
-      using (var repository = new LinqToSqlRepository<MockEntity>(this.Connection()))
+      using (var repository = new LinqToSqlRepository<TestEntity>(this.Connection()))
       {
-        Assert.True(ReferenceEquals(repository.DataContext.GetTable<MockEntity>().AsQueryable().ElementType, repository.ElementType));
+        Assert.True(ReferenceEquals(repository.DataContext.GetTable<TestEntity>().AsQueryable().ElementType, repository.ElementType));
       }
     }
 
@@ -236,15 +236,15 @@ namespace Catharsis.Repository
     [Fact]
     public void Provider_Property()
     {
-      using (var repository = new LinqToSqlRepository<MockEntity>(this.Connection()))
+      using (var repository = new LinqToSqlRepository<TestEntity>(this.Connection()))
       {
-        Assert.Equal(repository.DataContext.GetTable<MockEntity>().AsQueryable().Provider.ToString(), repository.Provider.ToString());
+        Assert.Equal(repository.DataContext.GetTable<TestEntity>().AsQueryable().Provider.ToString(), repository.Provider.ToString());
       }
     }
 
     public void Dispose()
     {
-      using (var repository = new LinqToSqlRepository<MockEntity>(this.Connection()))
+      using (var repository = new LinqToSqlRepository<TestEntity>(this.Connection()))
       {
         repository.DeleteAll().Commit();
       }

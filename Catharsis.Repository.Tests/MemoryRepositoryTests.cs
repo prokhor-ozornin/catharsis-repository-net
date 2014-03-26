@@ -19,7 +19,7 @@ namespace Catharsis.Repository
     [Fact]
     public void Constructors()
     {
-      using (var repository = new MemoryRepository<MockEntity>())
+      using (var repository = new MemoryRepository<TestEntity>())
       {
         Assert.False(repository.Any());
       }
@@ -31,9 +31,9 @@ namespace Catharsis.Repository
     [Fact]
     public void Commit_Method()
     {
-      var entity = new MockEntity();
+      var entity = new TestEntity();
 
-      using (var repository = new MemoryRepository<MockEntity>())
+      using (var repository = new MemoryRepository<TestEntity>())
       {
         Assert.False(repository.Any());
 
@@ -54,16 +54,16 @@ namespace Catharsis.Repository
     [Fact]
     public void Delete_Method()
     {
-      Assert.Throws<ArgumentNullException>(() => new MemoryRepository<MockEntity>().Delete(null));
+      Assert.Throws<ArgumentNullException>(() => new MemoryRepository<TestEntity>().Delete(null));
 
-      var entity = new MockEntity();
+      var entity = new TestEntity();
 
-      using (var repository = new MemoryRepository<MockEntity>())
+      using (var repository = new MemoryRepository<TestEntity>())
       {
         repository.Transaction(() =>  Assert.True(ReferenceEquals(repository.Delete(entity), repository)));
         
         repository.Transaction(() => repository.Persist(entity));
-        repository.Transaction(() => repository.Delete(new MockEntity()));
+        repository.Transaction(() => repository.Delete(new TestEntity()));
         Assert.True(ReferenceEquals(repository.Single(), entity));
         
         repository.Transaction(() => repository.Delete(entity));
@@ -77,12 +77,12 @@ namespace Catharsis.Repository
     [Fact]
     public void DeleteAll_Method()
     {
-      using (var repository = new MemoryRepository<MockEntity>())
+      using (var repository = new MemoryRepository<TestEntity>())
       {
         repository.Transaction(() => Assert.True(ReferenceEquals(repository.DeleteAll(), repository)));
         Assert.False(repository.Any());
         
-        repository.Transaction(() => repository.Persist(new MockEntity()).Persist(new MockEntity()));
+        repository.Transaction(() => repository.Persist(new TestEntity()).Persist(new TestEntity()));
         Assert.Equal(2, repository.Count());
 
         repository.Transaction(() => repository.DeleteAll());
@@ -96,9 +96,9 @@ namespace Catharsis.Repository
     [Fact]
     public void Dispose_Method()
     {
-      var entity = new MockEntity();
+      var entity = new TestEntity();
 
-      using (var repository = new MemoryRepository<MockEntity>())
+      using (var repository = new MemoryRepository<TestEntity>())
       {
         repository.Persist(entity).Dispose();
         Assert.True(ReferenceEquals(repository.Single(), entity));
@@ -114,9 +114,9 @@ namespace Catharsis.Repository
     [Fact]
     public void GetEnumerator_Method()
     {
-      var entity = new MockEntity();
+      var entity = new TestEntity();
 
-      using (var repository = new MemoryRepository<MockEntity>())
+      using (var repository = new MemoryRepository<TestEntity>())
       {
         Assert.False(repository.GetEnumerator().MoveNext());
 
@@ -133,11 +133,11 @@ namespace Catharsis.Repository
     [Fact]
     public void Persist_Method()
     {
-      Assert.Throws<ArgumentNullException>(() => new MemoryRepository<MockEntity>().Persist(null));
+      Assert.Throws<ArgumentNullException>(() => new MemoryRepository<TestEntity>().Persist(null));
 
-      var entity = new MockEntity { Name = "first" };
+      var entity = new TestEntity { Name = "first" };
 
-      using (var repository = new MemoryRepository<MockEntity>())
+      using (var repository = new MemoryRepository<TestEntity>())
       {
         Assert.False(repository.Any());
         
@@ -162,11 +162,11 @@ namespace Catharsis.Repository
     [Fact]
     public void Refresh_Method()
     {
-      Assert.Throws<ArgumentNullException>(() => new MemoryRepository<MockEntity>().Refresh(null));
+      Assert.Throws<ArgumentNullException>(() => new MemoryRepository<TestEntity>().Refresh(null));
 
-      var entity = new MockEntity { Name = "first" };
+      var entity = new TestEntity { Name = "first" };
 
-      using (var repository = new MemoryRepository<MockEntity>())
+      using (var repository = new MemoryRepository<TestEntity>())
       {
         Assert.True(ReferenceEquals(repository.Refresh(entity), repository));
         Assert.Equal(0, entity.Id);
@@ -187,9 +187,9 @@ namespace Catharsis.Repository
     [Fact]
     public void Transaction_Method()
     {
-      var entity = new MockEntity();
+      var entity = new TestEntity();
 
-      using (var repository = new MemoryRepository<MockEntity>())
+      using (var repository = new MemoryRepository<TestEntity>())
       {
         using (repository.Transaction())
         {
@@ -268,9 +268,9 @@ namespace Catharsis.Repository
     [Fact]
     public void Expression_Property()
     {
-      using (var repository = new MemoryRepository<MockEntity>())
+      using (var repository = new MemoryRepository<TestEntity>())
       {
-        Assert.Equal(repository.Field("entities").To<IEnumerable<MockEntity>>().AsQueryable().Expression.ToString(), repository.Expression.ToString());
+        Assert.Equal(repository.Field("entities").To<IEnumerable<TestEntity>>().AsQueryable().Expression.ToString(), repository.Expression.ToString());
       }
     }
 
@@ -280,9 +280,9 @@ namespace Catharsis.Repository
     [Fact]
     public void ElementType_Property()
     {
-      using (var repository = new MemoryRepository<MockEntity>())
+      using (var repository = new MemoryRepository<TestEntity>())
       {
-        Assert.True(ReferenceEquals(repository.Field("entities").To<IEnumerable<MockEntity>>().AsQueryable().ElementType, repository.ElementType));
+        Assert.True(ReferenceEquals(repository.Field("entities").To<IEnumerable<TestEntity>>().AsQueryable().ElementType, repository.ElementType));
       }
     }
 
@@ -292,15 +292,15 @@ namespace Catharsis.Repository
     [Fact]
     public void Provider_Property()
     {
-      using (var repository = new MemoryRepository<MockEntity>())
+      using (var repository = new MemoryRepository<TestEntity>())
       {
-        Assert.Equal(repository.Field("entities").To<IEnumerable<MockEntity>>().AsQueryable().Provider.ToString(), repository.Provider.ToString());
+        Assert.Equal(repository.Field("entities").To<IEnumerable<TestEntity>>().AsQueryable().Provider.ToString(), repository.Provider.ToString());
       }
     }
 
     public void Dispose()
     {
-      using (var repository = new MemoryRepository<MockEntity>())
+      using (var repository = new MemoryRepository<TestEntity>())
       {
         repository.DeleteAll().Commit();
       }

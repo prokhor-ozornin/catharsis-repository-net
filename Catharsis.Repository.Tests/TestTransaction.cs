@@ -3,14 +3,14 @@ using System.Data;
 
 namespace Catharsis.Repository
 {
-  internal sealed class MockTransaction : ITransaction
+  internal sealed class TestTransaction : ITransaction
   {
     private bool disposed;
     private IsolationLevel isolation;
     private bool wasCommitted;
     private bool wasRolledBack;
 
-    public MockTransaction(IsolationLevel? isolation = null)
+    public TestTransaction(IsolationLevel? isolation = null)
     {
       this.isolation = isolation ?? IsolationLevel.Unspecified;
     }

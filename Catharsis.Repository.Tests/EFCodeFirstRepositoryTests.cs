@@ -18,10 +18,10 @@ namespace Catharsis.Repository
     [Fact]
     public void Constructors()
     {
-      Assert.Throws<ArgumentNullException>(() => new EFCodeFirstRepository<MockEntity>(null));
+      Assert.Throws<ArgumentNullException>(() => new EFCodeFirstRepository<TestEntity>(null));
 
-      var dbContext = new MockContext();
-      using (var repository = new EFCodeFirstRepository<MockEntity>(dbContext))
+      var dbContext = new TestContext();
+      using (var repository = new EFCodeFirstRepository<TestEntity>(dbContext))
       {
         Assert.True(ReferenceEquals(repository.DbContext, dbContext));
       }
@@ -33,9 +33,9 @@ namespace Catharsis.Repository
     [Fact]
     public void Commit_Method()
     {
-      var entity = new MockEntity();
+      var entity = new TestEntity();
 
-      using (var repository = new EFCodeFirstRepository<MockEntity>(new MockContext()))
+      using (var repository = new EFCodeFirstRepository<TestEntity>(new TestContext()))
       {
         Assert.False(repository.Any());
 
@@ -56,11 +56,11 @@ namespace Catharsis.Repository
     [Fact]
     public void Delete_Method()
     {
-      Assert.Throws<ArgumentNullException>(() => new EFCodeFirstRepository<MockEntity>(new MockContext()).Delete(null));
+      Assert.Throws<ArgumentNullException>(() => new EFCodeFirstRepository<TestEntity>(new TestContext()).Delete(null));
 
-      var entity = new MockEntity();
+      var entity = new TestEntity();
 
-      using (var repository = new EFCodeFirstRepository<MockEntity>(new MockContext()))
+      using (var repository = new EFCodeFirstRepository<TestEntity>(new TestContext()))
       {
         Assert.Throws<InvalidOperationException>(() => repository.Delete(entity));
         Assert.False(repository.Persist(entity).Delete(entity).Commit().Any());
@@ -73,12 +73,12 @@ namespace Catharsis.Repository
     [Fact]
     public void DeleteAll_Method()
     {
-      using (var repository = new EFCodeFirstRepository<MockEntity>(new MockContext()))
+      using (var repository = new EFCodeFirstRepository<TestEntity>(new TestContext()))
       {
         Assert.True(ReferenceEquals(repository.DeleteAll(), repository));
         Assert.False(repository.Commit().Any());
 
-        repository.Persist(new MockEntity()).Persist(new MockEntity());
+        repository.Persist(new TestEntity()).Persist(new TestEntity());
         Assert.Equal(2, repository.Commit().Count());
 
         repository.DeleteAll();
@@ -92,9 +92,9 @@ namespace Catharsis.Repository
     [Fact]
     public void Dispose_Method()
     {
-      var entity = new MockEntity();
+      var entity = new TestEntity();
 
-      using (var repository = new EFCodeFirstRepository<MockEntity>(new MockContext()))
+      using (var repository = new EFCodeFirstRepository<TestEntity>(new TestContext()))
       {
         repository.Persist(entity).Dispose();
         Assert.Throws<InvalidOperationException>(() => repository.Single());
@@ -109,9 +109,9 @@ namespace Catharsis.Repository
     [Fact]
     public void GetEnumerator_Method()
     {
-      var entity = new MockEntity();
+      var entity = new TestEntity();
 
-      using (var repository = new EFCodeFirstRepository<MockEntity>(new MockContext()))
+      using (var repository = new EFCodeFirstRepository<TestEntity>(new TestContext()))
       {
         Assert.False(repository.GetEnumerator().MoveNext());
 
@@ -128,11 +128,11 @@ namespace Catharsis.Repository
     [Fact]
     public void Persist_Method()
     {
-      Assert.Throws<ArgumentNullException>(() => new EFCodeFirstRepository<MockEntity>(new MockContext()).Persist(null));
+      Assert.Throws<ArgumentNullException>(() => new EFCodeFirstRepository<TestEntity>(new TestContext()).Persist(null));
 
-      var entity = new MockEntity { Name = "first" };
+      var entity = new TestEntity { Name = "first" };
 
-      using (var repository = new EFCodeFirstRepository<MockEntity>(new MockContext()))
+      using (var repository = new EFCodeFirstRepository<TestEntity>(new TestContext()))
       {
         Assert.False(repository.Any());
 
@@ -158,11 +158,11 @@ namespace Catharsis.Repository
     [Fact]
     public void Refresh_Method()
     {
-      Assert.Throws<ArgumentNullException>(() => new EFCodeFirstRepository<MockEntity>(new MockContext()).Refresh(null));
+      Assert.Throws<ArgumentNullException>(() => new EFCodeFirstRepository<TestEntity>(new TestContext()).Refresh(null));
 
-      var entity = new MockEntity { Name = "first" };
+      var entity = new TestEntity { Name = "first" };
 
-      using (var repository = new EFCodeFirstRepository<MockEntity>(new MockContext()))
+      using (var repository = new EFCodeFirstRepository<TestEntity>(new TestContext()))
       {
         Assert.Throws<InvalidOperationException>(() => repository.Refresh(entity));
 
@@ -183,7 +183,7 @@ namespace Catharsis.Repository
     [Fact]
     public void Transaction_Method()
     {
-      using (var repository = new EFCodeFirstRepository<MockEntity>(new MockContext()))
+      using (var repository = new EFCodeFirstRepository<TestEntity>(new TestContext()))
       {
         Assert.NotNull(repository.Transaction());
       }
@@ -195,9 +195,9 @@ namespace Catharsis.Repository
     [Fact]
     public void Expression_Property()
     {
-      using (var repository = new EFCodeFirstRepository<MockEntity>(new MockContext()))
+      using (var repository = new EFCodeFirstRepository<TestEntity>(new TestContext()))
       {
-        Assert.Equal(repository.DbContext.Set<MockEntity>().AsQueryable().Expression.ToString(), repository.Expression.ToString());
+        Assert.Equal(repository.DbContext.Set<TestEntity>().AsQueryable().Expression.ToString(), repository.Expression.ToString());
       }
     }
 
@@ -207,9 +207,9 @@ namespace Catharsis.Repository
     [Fact]
     public void ElementType_Property()
     {
-      using (var repository = new EFCodeFirstRepository<MockEntity>(new MockContext()))
+      using (var repository = new EFCodeFirstRepository<TestEntity>(new TestContext()))
       {
-        Assert.True(ReferenceEquals(repository.DbContext.Set<MockEntity>().AsQueryable().ElementType, repository.ElementType));
+        Assert.True(ReferenceEquals(repository.DbContext.Set<TestEntity>().AsQueryable().ElementType, repository.ElementType));
       }
     }
 
@@ -219,15 +219,15 @@ namespace Catharsis.Repository
     [Fact]
     public void Provider_Property()
     {
-      using (var repository = new EFCodeFirstRepository<MockEntity>(new MockContext()))
+      using (var repository = new EFCodeFirstRepository<TestEntity>(new TestContext()))
       {
-        Assert.Equal(repository.DbContext.Set<MockEntity>().AsQueryable().Provider.ToString(), repository.Provider.ToString());
+        Assert.Equal(repository.DbContext.Set<TestEntity>().AsQueryable().Provider.ToString(), repository.Provider.ToString());
       }
     }
 
     public void Dispose()
     {
-      using (var repository = new EFCodeFirstRepository<MockEntity>(new MockContext()))
+      using (var repository = new EFCodeFirstRepository<TestEntity>(new TestContext()))
       {
         repository.DeleteAll().Commit();
       }

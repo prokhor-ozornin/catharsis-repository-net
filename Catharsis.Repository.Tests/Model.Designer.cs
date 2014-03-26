@@ -9,14 +9,14 @@
 
 using System;
 using System.ComponentModel;
-using System.Data.Entity.Core.EntityClient;
-using System.Data.Entity.Core.Objects;
-using System.Data.Entity.Core.Objects.DataClasses;
+using System.Data.EntityClient;
+using System.Data.Objects;
+using System.Data.Objects.DataClasses;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Xml.Serialization;
 
-[assembly: EdmSchema()]
+[assembly: EdmSchemaAttribute()]
 namespace Catharsis.Repository
 {
     #region Contexts
@@ -68,29 +68,29 @@ namespace Catharsis.Repository
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        public ObjectSet<MockEntity> MockEntity
+        public ObjectSet<EFModelEntity> EFModelEntity
         {
             get
             {
-                if ((_MockEntity == null))
+                if ((_EFModelEntity == null))
                 {
-                    _MockEntity = base.CreateObjectSet<MockEntity>("MockEntity");
+                    _EFModelEntity = base.CreateObjectSet<EFModelEntity>("EFModelEntity");
                 }
-                return _MockEntity;
+                return _EFModelEntity;
             }
         }
-        private ObjectSet<MockEntity> _MockEntity;
+        private ObjectSet<EFModelEntity> _EFModelEntity;
 
         #endregion
 
         #region AddTo Methods
     
         /// <summary>
-        /// Deprecated Method for adding a new object to the MockEntity EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// Deprecated Method for adding a new object to the EFModelEntity EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
         /// </summary>
-        public void AddToMockEntity(MockEntity mockEntity)
+        public void AddToEFModelEntity(EFModelEntity eFModelEntity)
         {
-            base.AddObject("MockEntity", mockEntity);
+            base.AddObject("EFModelEntity", eFModelEntity);
         }
 
         #endregion
@@ -104,22 +104,22 @@ namespace Catharsis.Repository
     /// <summary>
     /// No Metadata Documentation available.
     /// </summary>
-    [EdmEntityTypeAttribute(NamespaceName="Catharsis.Repository", Name="MockEntity")]
+    [EdmEntityTypeAttribute(NamespaceName="Catharsis.Repository", Name="EFModelEntity")]
     [Serializable()]
     [DataContractAttribute(IsReference=true)]
-    public partial class MockEntity : EntityObject
+    public partial class EFModelEntity : EntityObject
     {
         #region Factory Method
     
         /// <summary>
-        /// Create a new MockEntity object.
+        /// Create a new EFModelEntity object.
         /// </summary>
         /// <param name="id">Initial value of the Id property.</param>
-        public static MockEntity CreateMockEntity(global::System.Int64 id)
+        public static EFModelEntity CreateEFModelEntity(global::System.Int64 id)
         {
-            MockEntity mockEntity = new MockEntity();
-            mockEntity.Id = id;
-            return mockEntity;
+            EFModelEntity eFModelEntity = new EFModelEntity();
+            eFModelEntity.Id = id;
+            return eFModelEntity;
         }
 
         #endregion

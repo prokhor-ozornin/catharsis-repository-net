@@ -23,23 +23,23 @@ namespace Catharsis.Repository
     [Fact]
     public void Constructors()
     {
-      Assert.Throws<ArgumentNullException>(() => new EFModelRepository<MockEntity>((ObjectContext) null));
-      Assert.Throws<ArgumentNullException>(() => new EFModelRepository<MockEntity>((string) null));
-      Assert.Throws<ArgumentException>(() => new EFModelRepository<MockEntity>(string.Empty));
+      Assert.Throws<ArgumentNullException>(() => new EFModelRepository<EFModelEntity>((ObjectContext) null));
+      Assert.Throws<ArgumentNullException>(() => new EFModelRepository<EFModelEntity>((string) null));
+      Assert.Throws<ArgumentException>(() => new EFModelRepository<EFModelEntity>(string.Empty));
 
       var objectContext = new ObjectContext(this.connectionString);
-      using (var repository = new EFModelRepository<MockEntity>(objectContext))
+      using (var repository = new EFModelRepository<EFModelEntity>(objectContext))
       {
         Assert.True(ReferenceEquals(repository.ObjectContext, objectContext));
-        Assert.True(ReferenceEquals(repository.Field("objectSet").To<ObjectSet<MockEntity>>().Context, repository.Field("objectContext").To<ObjectContext>()));
+        Assert.True(ReferenceEquals(repository.Field("objectSet").To<ObjectSet<EFModelEntity>>().Context, repository.Field("objectContext").To<ObjectContext>()));
         Assert.False(repository.Field("ownsContext").To<bool>());
       }
 
-      using (var repository = new EFModelRepository<MockEntity>(this.connectionString))
+      using (var repository = new EFModelRepository<EFModelEntity>(this.connectionString))
       {
         Assert.False(ReferenceEquals(repository.ObjectContext, objectContext));
         Assert.Equal(this.connectionString, repository.ObjectContext.Connection.ConnectionString);
-        Assert.True(ReferenceEquals(repository.Field("objectSet").To<ObjectSet<MockEntity>>().Context, repository.Field("objectContext").To<ObjectContext>()));
+        Assert.True(ReferenceEquals(repository.Field("objectSet").To<ObjectSet<EFModelEntity>>().Context, repository.Field("objectContext").To<ObjectContext>()));
         Assert.True(repository.Field("ownsContext").To<bool>());
       }
     }
@@ -50,9 +50,9 @@ namespace Catharsis.Repository
     [Fact]
     public void Commit_Method()
     {
-      var entity = new MockEntity();
+      var entity = new EFModelEntity();
 
-      using (var repository = new EFModelRepository<MockEntity>(this.connectionString))
+      using (var repository = new EFModelRepository<EFModelEntity>(this.connectionString))
       {
         Assert.False(repository.Any());
 
@@ -73,11 +73,11 @@ namespace Catharsis.Repository
     [Fact]
     public void Delete_Method()
     {
-      Assert.Throws<ArgumentNullException>(() => new EFModelRepository<MockEntity>(this.connectionString).Delete(null));
+      Assert.Throws<ArgumentNullException>(() => new EFModelRepository<EFModelEntity>(this.connectionString).Delete(null));
 
-      var entity = new MockEntity();
+      var entity = new EFModelEntity();
 
-      using (var repository = new EFModelRepository<MockEntity>(this.connectionString))
+      using (var repository = new EFModelRepository<EFModelEntity>(this.connectionString))
       {
         Assert.Throws<InvalidOperationException>(() => repository.Delete(entity));
         Assert.False(repository.Persist(entity).Delete(entity).Commit().Any());
@@ -90,12 +90,12 @@ namespace Catharsis.Repository
     [Fact]
     public void DeleteAll_Method()
     {
-      using (var repository = new EFModelRepository<MockEntity>(this.connectionString))
+      using (var repository = new EFModelRepository<EFModelEntity>(this.connectionString))
       {
         Assert.True(ReferenceEquals(repository.DeleteAll(), repository));
         Assert.False(repository.Commit().Any());
 
-        repository.Persist(new MockEntity()).Persist(new MockEntity());
+        repository.Persist(new EFModelEntity()).Persist(new EFModelEntity());
         Assert.Equal(2, repository.Commit().Count());
 
         repository.DeleteAll();
@@ -109,9 +109,9 @@ namespace Catharsis.Repository
     [Fact]
     public void Dispose_Method()
     {
-      var entity = new MockEntity();
+      var entity = new EFModelEntity();
 
-      using (var repository = new EFModelRepository<MockEntity>(this.connectionString))
+      using (var repository = new EFModelRepository<EFModelEntity>(this.connectionString))
       {
         repository.Persist(entity).Dispose();
         Assert.Throws<ObjectDisposedException>(() => repository.Single());
@@ -126,9 +126,9 @@ namespace Catharsis.Repository
     [Fact]
     public void GetEnumerator_Method()
     {
-      var entity = new MockEntity();
+      var entity = new EFModelEntity();
 
-      using (var repository = new EFModelRepository<MockEntity>(this.connectionString))
+      using (var repository = new EFModelRepository<EFModelEntity>(this.connectionString))
       {
         Assert.False(repository.GetEnumerator().MoveNext());
 
@@ -145,11 +145,11 @@ namespace Catharsis.Repository
     [Fact]
     public void Persist_Method()
     {
-      Assert.Throws<ArgumentNullException>(() => new EFModelRepository<MockEntity>(this.connectionString).Persist(null));
+      Assert.Throws<ArgumentNullException>(() => new EFModelRepository<EFModelEntity>(this.connectionString).Persist(null));
 
-      var entity = new MockEntity { Name = "first" };
+      var entity = new EFModelEntity { Name = "first" };
 
-      using (var repository = new EFModelRepository<MockEntity>(this.connectionString))
+      using (var repository = new EFModelRepository<EFModelEntity>(this.connectionString))
       {
         Assert.False(repository.Any());
 
@@ -175,11 +175,11 @@ namespace Catharsis.Repository
     [Fact]
     public void Refresh_Method()
     {
-      Assert.Throws<ArgumentNullException>(() => new EFModelRepository<MockEntity>(this.connectionString).Refresh(null));
+      Assert.Throws<ArgumentNullException>(() => new EFModelRepository<EFModelEntity>(this.connectionString).Refresh(null));
 
-      var entity = new MockEntity { Name = "first" };
+      var entity = new EFModelEntity { Name = "first" };
 
-      using (var repository = new EFModelRepository<MockEntity>(this.connectionString))
+      using (var repository = new EFModelRepository<EFModelEntity>(this.connectionString))
       {
         Assert.Throws<InvalidOperationException>(() => repository.Refresh(entity));
 
@@ -200,7 +200,7 @@ namespace Catharsis.Repository
     [Fact]
     public void Transaction_Method()
     {
-      using (var repository = new EFModelRepository<MockEntity>(this.connectionString))
+      using (var repository = new EFModelRepository<EFModelEntity>(this.connectionString))
       {
         Assert.NotNull(repository.Transaction());
       }
@@ -212,9 +212,9 @@ namespace Catharsis.Repository
     [Fact]
     public void Expression_Property()
     {
-      using (var repository = new EFModelRepository<MockEntity>(this.connectionString))
+      using (var repository = new EFModelRepository<EFModelEntity>(this.connectionString))
       {
-        Assert.Equal(repository.ObjectContext.CreateObjectSet<MockEntity>().AsQueryable().Expression.ToString(), repository.Expression.ToString());
+        Assert.Equal(repository.ObjectContext.CreateObjectSet<EFModelEntity>().AsQueryable().Expression.ToString(), repository.Expression.ToString());
       }
     }
 
@@ -224,9 +224,9 @@ namespace Catharsis.Repository
     [Fact]
     public void ElementType_Property()
     {
-      using (var repository = new EFModelRepository<MockEntity>(this.connectionString))
+      using (var repository = new EFModelRepository<EFModelEntity>(this.connectionString))
       {
-        Assert.True(ReferenceEquals(repository.ObjectContext.CreateObjectSet<MockEntity>().AsQueryable().ElementType, repository.ElementType));
+        Assert.True(ReferenceEquals(repository.ObjectContext.CreateObjectSet<EFModelEntity>().AsQueryable().ElementType, repository.ElementType));
       }
     }
 
@@ -236,15 +236,15 @@ namespace Catharsis.Repository
     [Fact]
     public void Provider_Property()
     {
-      using (var repository = new EFModelRepository<MockEntity>(this.connectionString))
+      using (var repository = new EFModelRepository<EFModelEntity>(this.connectionString))
       {
-        Assert.Equal(repository.ObjectContext.CreateObjectSet<MockEntity>().AsQueryable().Provider.ToString(), repository.Provider.ToString());
+        Assert.Equal(repository.ObjectContext.CreateObjectSet<EFModelEntity>().AsQueryable().Provider.ToString(), repository.Provider.ToString());
       }
     }
 
     public void Dispose()
     {
-      using (var repository = new EFModelRepository<MockEntity>(this.connectionString))
+      using (var repository = new EFModelRepository<EFModelEntity>(this.connectionString))
       {
         repository.DeleteAll().Commit();
       }

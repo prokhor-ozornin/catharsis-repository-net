@@ -14,7 +14,7 @@ namespace Catharsis.Repository
       var container = new UnityContainer();
       var configuration = NHibernate();
       
-      container.RegisterInstance<IRepository<MockEntity>>(new NHibernateRepository<MockEntity>(configuration));
+      container.RegisterInstance<IRepository<TestEntity>>(new NHibernateRepository<TestEntity>(configuration));
       
       return container;
     }
@@ -23,7 +23,7 @@ namespace Catharsis.Repository
     {
       return Fluently.Configure()
         .Database(MsSqlConfiguration.MsSql2008.ConnectionString(x => x.FromConnectionStringWithKey("SQLServer")).ShowSql().FormatSql())
-        .Mappings(mappings => mappings.FluentMappings.AddFromAssembly(Assembly.GetAssembly(typeof(MockEntity))))
+        .Mappings(mappings => mappings.FluentMappings.AddFromAssembly(Assembly.GetAssembly(typeof(TestEntity))))
         .ExposeConfiguration(configuration =>
         {
           new SchemaExport(configuration).Drop(false, true);

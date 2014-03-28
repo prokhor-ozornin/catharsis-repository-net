@@ -86,4 +86,140 @@ Querying is performed as usual for `IQueryable<T>` objects.
 >
 > }
 
-Code is well commented, refer to XML docs for more details.
+You can also use a shared `ISession` between different repositories :
+
+> ISession session = ...
+>
+> using (session)
+>
+> {
+>
+>   using (var firstRepository = new NHibernateRepository < FirstEntity > (session))
+>
+>
+>   {
+>
+>     ...
+>
+>   }
+>
+>
+>   using (var secondRepository = new NHibernateRepository < SecondEntity > (session))
+>
+>   {
+>
+>     ...
+>
+>   }
+>
+> }
+
+**LinqToSqlRepository**
+
+Implementation of `IRepository<ENTITY>` interface over Microsoft LINQ2SQL ORM library (`System.Data.Linq`).
+
+You can create `LinqToSqlRepository<ENTITY>` generic class instance by passing to its constructor either :
+
+1. Connection string
+2. IDbConnection
+
+Use first option to make repository internally create and manage lifetime of `IDbConnection` on own behalf. Use second option to share single connection between different instances of `LinqToSqlRepository<ENTITY>`.
+
+Please note that since `DataContext.SubmitChanges()` method, called inside `LinqToSqlRepository<ENTITY>.Commit()` method, starts its own transaction, calling `LinqToSqlRepository<ENTITY>.Transaction()` method has little practical meaning as few implementations of `IDbConnection `interface (data providers) support nested transactions, so calling `LinqToSqlRepository<ENTITY>.Commit()` method should be a recommended approach.
+
+> IDbConnection connection = ...
+>
+> using (connection)
+>
+> {
+>
+>   using (var firstRepository = new LinqToSqlRepository < FirstEntity > (connection))
+>
+>   {
+>
+>     ...
+>
+>   }
+>
+>   using (var secondRepository = new LinqToSqlRepository < SecondEntity > (connection))
+>
+>   {
+>
+>     ...
+>
+>   }
+>
+> }
+
+**EFModelRepository**
+
+Implementation of `IRepository<ENTITY>` interface over Microsoft Entity Framework 6 (database-first approach).
+
+You can create `EFModelRepository<ENTITY>` generic class instance by passing to its constructor either :
+
+1. Connection string (including metadata option)
+2. ObjectContext
+
+Use first option to make repository internally create and manage lifetime of `ObjectContext` instance on own behalf. Use second option to share single context between different instances of `EFModelRepository<ENTITY>`.
+
+Please note that since `ObjectContext.SaveChanges()` method, called inside `EFModelRepository<ENTITY>.Commit()` method, starts its own transaction, calling `EFModelRepository<ENTITY>.Transaction()` method has little practical meaning, so calling `EFModelRepository<ENTITY>.Commit()` method should be a recommended approach.
+
+> ObjectContext objectContext = ...
+>
+> using (objectContext)
+>
+> {
+>
+>   using (var firstRepository = new EFModelRepository < FirstEntity > (objectContext))
+>
+>   {
+>
+>     ...
+>
+>   }
+>
+>   using (var secondRepository = new EFModelRepository < SecondEntity > (objectContext))
+>
+>   {
+>
+>     ...
+>
+>   }
+>
+> }
+
+**EFCodeFirstRepository**
+
+Implementation of `IRepository<ENTITY>` interface over Microsoft Entity Framework 6 (code-first approach).
+
+You can create `EFCodeFirstRepository<ENTITY>` generic class instance by passing to its constructor a shared instance that inherits from `DbContext` class.
+
+Please note that since `DbContext.SaveChanges()` method, called inside `EFCodeFirstRepository<ENTITY>.Commit()` method, starts its own transaction, calling `EFCodeFirstRepository<ENTITY>.Transaction()` method has little practical meaning, so calling `EFCodeFirstRepository<ENTITY>.Commit()` method should be a recommended approach.
+
+> DbContext dbContext = ...
+>
+> using (dbContext)
+>
+> {
+>
+>   using (var firstRepository = new EFCodeFirstRepository < FirstEntity > (dbContext))
+>
+>   {
+>
+>     ...
+>
+>   }
+>
+>   using (var secondRepository = new EFCodeFirstRepository < SecondEntity > (dbContext))
+>
+>   {
+>
+>     ...
+>
+>   }
+>
+> }
+
+**MemoryRepository**
+
+This is a very basic implementation of `IRepository<ENTITY>` interface that stores all entities instances in memory and does not support transactional behavior.

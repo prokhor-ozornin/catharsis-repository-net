@@ -17,9 +17,9 @@ namespace Catharsis.Repository
 
     /// <summary>
     ///   <para>Performs testing of class constructor(s).</para>
-    ///   <seealso cref="EFModelRepository{ENTITY}(ObjectContext)"/>
-    ///   <seealso cref="EFModelRepository{ENTITY}(string)"/>
     /// </summary>
+    /// <seealso cref="EFModelRepository{ENTITY}(ObjectContext)"/>
+    /// <seealso cref="EFModelRepository{ENTITY}(string)"/>
     [Fact]
     public void Constructors()
     {

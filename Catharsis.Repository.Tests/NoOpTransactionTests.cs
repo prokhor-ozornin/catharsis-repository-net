@@ -10,8 +10,8 @@ namespace Catharsis.Repository
   {
     /// <summary>
     ///   <para>Performs testing of class constructor(s).</para>
-    ///   <seealso cref="NoOpTransaction(IsolationLevel?)"/>
     /// </summary>
+    /// <seealso cref="NoOpTransaction(IsolationLevel?)"/>
     [Fact]
     public void Constructors()
     {

@@ -17,9 +17,9 @@ namespace Catharsis.Repository
 
     /// <summary>
     ///   <para>Performs testing of class constructor(s).</para>
-    ///   <seealso cref="LinqToSqlRepository{ENTITY}(string)"/>
-    ///   <seealso cref="LinqToSqlRepository{ENTITY}(IDbConnection)"/>
     /// </summary>
+    /// <seealso cref="LinqToSqlRepository{ENTITY}(string)"/>
+    /// <seealso cref="LinqToSqlRepository{ENTITY}(IDbConnection)"/>
     [Fact]
     public void Constructors()
     {

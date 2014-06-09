@@ -14,8 +14,8 @@ namespace Catharsis.Repository
   {
     /// <summary>
     ///   <para>Performs testing of class constructor(s).</para>
-    ///   <seealso cref="MemoryRepository{ENTITY}()"/>
     /// </summary>
+    /// <seealso cref="MemoryRepository{ENTITY}()"/>
     [Fact]
     public void Constructors()
     {

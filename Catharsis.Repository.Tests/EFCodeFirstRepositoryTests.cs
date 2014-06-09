@@ -13,8 +13,8 @@ namespace Catharsis.Repository
   {
     /// <summary>
     ///   <para>Performs testing of class constructor(s).</para>
-    ///   <seealso cref="EFCodeFirstRepository{ENTITY}(DbContext)"/>
     /// </summary>
+    /// <seealso cref="EFCodeFirstRepository{ENTITY}(DbContext)"/>
     [Fact]
     public void Constructors()
     {

@@ -18,10 +18,10 @@ namespace Catharsis.Repository
 
     /// <summary>
     ///   <para>Performs testing of class constructor(s).</para>
-    ///   <seealso cref="NHibernateRepository{ENTITY}(ISession)"/>
-    ///   <seealso cref="NHibernateRepository{ENTITY}(ISessionFactory)"/>
-    ///   <seealso cref="NHibernateRepository{ENTITY}(Configuration)"/>
     /// </summary>
+    /// <seealso cref="NHibernateRepository{ENTITY}(ISession)"/>
+    /// <seealso cref="NHibernateRepository{ENTITY}(ISessionFactory)"/>
+    /// <seealso cref="NHibernateRepository{ENTITY}(Configuration)"/>
     [Fact]
     public void Constructors()
     {

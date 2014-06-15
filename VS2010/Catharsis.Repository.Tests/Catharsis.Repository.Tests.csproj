@@ -32,8 +32,9 @@
     <DocumentationFile>bin\Release\Catharsis.Repository.Tests.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Catharsis.Commons">
-      <HintPath>..\packages\Catharsis.Commons.2.2.5\lib\net40\Catharsis.Commons.dll</HintPath>
+    <Reference Include="Catharsis.Commons, Version=2.5.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Catharsis.Commons.2.5\lib\net40\Catharsis.Commons.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.1.0\lib\net40\EntityFramework.dll</HintPath>

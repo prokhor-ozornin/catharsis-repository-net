@@ -1,0 +1,116 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{FA9C2869-5D09-4102-AFF6-2DF4528A5AF4}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Catharsis.Repository</RootNamespace>
+    <AssemblyName>Catharsis.Repository</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\Catharsis.Repository.XML</DocumentationFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Catharsis.Commons">
+      <HintPath>..\packages\Catharsis.Commons.2.5\lib\net45\Catharsis.Commons.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Iesi.Collections">
+      <HintPath>..\packages\Iesi.Collections.3.2.0.1001\lib\Net35\Iesi.Collections.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.ServiceLocation">
+      <HintPath>..\packages\CommonServiceLocator.1.3\lib\portable-net4+sl5+netcore45+wpa81+wp8\Microsoft.Practices.ServiceLocation.dll</HintPath>
+    </Reference>
+    <Reference Include="NHibernate">
+      <HintPath>..\packages\NHibernate.3.3.3.4001\lib\Net35\NHibernate.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.Linq" />
+    <Reference Include="System.XML" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\VS2010\Catharsis.Repository.4.0\AdoNetTransaction.cs">
+      <Link>AdoNetTransaction.cs</Link>
+    </Compile>
+    <Compile Include="..\..\VS2010\Catharsis.Repository.4.0\EFCodeFirstRepository.cs">
+      <Link>EFCodeFirstRepository.cs</Link>
+    </Compile>
+    <Compile Include="..\..\VS2010\Catharsis.Repository.4.0\EFModelRepository.cs">
+      <Link>EFModelRepository.cs</Link>
+    </Compile>
+    <Compile Include="..\..\VS2010\Catharsis.Repository.4.0\IRepository.cs">
+      <Link>IRepository.cs</Link>
+    </Compile>
+    <Compile Include="..\..\VS2010\Catharsis.Repository.4.0\IRepositoryExtensions.cs">
+      <Link>IRepositoryExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\..\VS2010\Catharsis.Repository.4.0\ITransaction.cs">
+      <Link>ITransaction.cs</Link>
+    </Compile>
+    <Compile Include="..\..\VS2010\Catharsis.Repository.4.0\LinqToSqlRepository.cs">
+      <Link>LinqToSqlRepository.cs</Link>
+    </Compile>
+    <Compile Include="..\..\VS2010\Catharsis.Repository.4.0\MemoryRepository.cs">
+      <Link>MemoryRepository.cs</Link>
+    </Compile>
+    <Compile Include="..\..\VS2010\Catharsis.Repository.4.0\NHibernateRepository.cs">
+      <Link>NHibernateRepository.cs</Link>
+    </Compile>
+    <Compile Include="..\..\VS2010\Catharsis.Repository.4.0\NHibernateTransaction.cs">
+      <Link>NHibernateTransaction.cs</Link>
+    </Compile>
+    <Compile Include="..\..\VS2010\Catharsis.Repository.4.0\NoOpTransaction.cs">
+      <Link>NoOpTransaction.cs</Link>
+    </Compile>
+    <Compile Include="..\..\VS2010\Catharsis.Repository.4.0\ObjectExtensions.cs">
+      <Link>ObjectExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\..\VS2010\Catharsis.Repository.4.0\Repository.cs">
+      <Link>Repository.cs</Link>
+    </Compile>
+    <Compile Include="..\..\VS2010\Catharsis.Repository.4.0\RepositoryBase.cs">
+      <Link>RepositoryBase.cs</Link>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.21005.1
+VisualStudioVersion = 12.0.30723.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Catharsis.Repository.4.5", "Catharsis.Repository.4.5\Catharsis.Repository.4.5.csproj", "{FA9C2869-5D09-4102-AFF6-2DF4528A5AF4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Catharsis.Repository.4.5.1", "Catharsis.Repository.4.5.1\Catharsis.Repository.4.5.1.csproj", "{EC7C5302-D0E7-40E2-91D9-F949CA30244C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{FA9C2869-5D09-4102-AFF6-2DF4528A5AF4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FA9C2869-5D09-4102-AFF6-2DF4528A5AF4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FA9C2869-5D09-4102-AFF6-2DF4528A5AF4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EC7C5302-D0E7-40E2-91D9-F949CA30244C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EC7C5302-D0E7-40E2-91D9-F949CA30244C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EC7C5302-D0E7-40E2-91D9-F949CA30244C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EC7C5302-D0E7-40E2-91D9-F949CA30244C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

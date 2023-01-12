@@ -1,0 +1,50 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    <EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
+    <EnableNETAnalyzers>True</EnableNETAnalyzers>
+    <AnalysisLevel>latest</AnalysisLevel>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\Catharsis.Repository\EFCodeFirstRepository.cs" Link="EFCodeFirstRepository.cs" />
+    <Compile Include="..\Catharsis.Repository\EFModelRepository.cs" Link="EFModelRepository.cs" />
+    <Compile Include="..\Catharsis.Repository\Implementation\AdoNetTransaction.cs" Link="Implementation\AdoNetTransaction.cs" />
+    <Compile Include="..\Catharsis.Repository\Implementation\NHibernateTransaction.cs" Link="Implementation\NHibernateTransaction.cs" />
+    <Compile Include="..\Catharsis.Repository\Implementation\NoOpTransaction.cs" Link="Implementation\NoOpTransaction.cs" />
+    <Compile Include="..\Catharsis.Repository\IRepository.cs" Link="IRepository.cs" />
+    <Compile Include="..\Catharsis.Repository\IRepositoryExtensions.cs" Link="IRepositoryExtensions.cs" />
+    <Compile Include="..\Catharsis.Repository\ITransaction.cs" Link="ITransaction.cs" />
+    <Compile Include="..\Catharsis.Repository\MemoryRepository.cs" Link="MemoryRepository.cs" />
+    <Compile Include="..\Catharsis.Repository\NHibernateRepository.cs" Link="NHibernateRepository.cs" />
+    <Compile Include="..\Catharsis.Repository\ObjectExtensions.cs" Link="ObjectExtensions.cs" />
+    <Compile Include="..\Catharsis.Repository\Repository.cs" Link="Repository.cs" />
+    <Compile Include="..\Catharsis.Repository\RepositoryBase.cs" Link="RepositoryBase.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="Catharsis.Repository.Tests" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CommonServiceLocator" Version="2.0.6" />
+    <PackageReference Include="EntityFramework" Version="6.4.4" />
+    <PackageReference Include="NHibernate" Version="5.4.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Implementation\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Catharsis.Extensions">
+      <HintPath>..\..\..\Catharsis.Extensions\src\Catharsis.Extensions.Standard\bin\Release\netstandard2.1\Catharsis.Extensions.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>

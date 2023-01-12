@@ -1,0 +1,38 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.3.32819.101
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Catharsis.Repository.Core", "Catharsis.Repository.Core\Catharsis.Repository.Core.csproj", "{D57E22C6-9CC5-49A5-A3CA-DAEB347D1CFA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Catharsis.Repository.Standard", "Catharsis.Repository.Standard\Catharsis.Repository.Standard.csproj", "{EE0D0240-97E5-458F-93EA-5DEC224EC40B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Catharsis.Repository.Tests", "Catharsis.Repository.Tests\Catharsis.Repository.Tests.csproj", "{D13CE9DD-9509-4EE6-BCAD-28F12B4B5935}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D57E22C6-9CC5-49A5-A3CA-DAEB347D1CFA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D57E22C6-9CC5-49A5-A3CA-DAEB347D1CFA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D57E22C6-9CC5-49A5-A3CA-DAEB347D1CFA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D57E22C6-9CC5-49A5-A3CA-DAEB347D1CFA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EE0D0240-97E5-458F-93EA-5DEC224EC40B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EE0D0240-97E5-458F-93EA-5DEC224EC40B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EE0D0240-97E5-458F-93EA-5DEC224EC40B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EE0D0240-97E5-458F-93EA-5DEC224EC40B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D13CE9DD-9509-4EE6-BCAD-28F12B4B5935}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D13CE9DD-9509-4EE6-BCAD-28F12B4B5935}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D13CE9DD-9509-4EE6-BCAD-28F12B4B5935}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D13CE9DD-9509-4EE6-BCAD-28F12B4B5935}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {1BDECC95-A27B-4F4F-B48C-E131D7C461FA}
+		EnterpriseLibraryConfigurationToolBinariesPath = packages\Unity.2.1.505.2\lib\NET35
+	EndGlobalSection
+EndGlobal

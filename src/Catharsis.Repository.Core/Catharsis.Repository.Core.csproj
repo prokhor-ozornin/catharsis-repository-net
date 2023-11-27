@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <LangVersion>latest</LangVersion>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>disable</Nullable>
@@ -28,10 +28,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="CommonServiceLocator" Version="2.0.6" />
+    <PackageReference Include="CommonServiceLocator" Version="2.0.7" />
     <PackageReference Include="EntityFramework" Version="6.4.4" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.0" />
-    <PackageReference Include="NHibernate" Version="5.4.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.0" />
+    <PackageReference Include="NHibernate" Version="5.4.6" />
   </ItemGroup>
 
   <ItemGroup>
@@ -44,7 +44,7 @@
 
   <ItemGroup>
     <Reference Include="Catharsis.Extensions">
-      <HintPath>..\..\..\Catharsis.Extensions\src\Catharsis.Extensions.Core\bin\Release\net6.0\Catharsis.Extensions.dll</HintPath>
+      <HintPath>..\..\..\Catharsis.Extensions\src\Catharsis.Extensions.Core\bin\Release\net8.0\Catharsis.Extensions.dll</HintPath>
     </Reference>
   </ItemGroup>
 

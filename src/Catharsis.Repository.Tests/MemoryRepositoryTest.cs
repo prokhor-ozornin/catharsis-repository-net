@@ -1,4 +1,5 @@
 ﻿using System.Data;
+using Catharsis.Commons;
 using Catharsis.Extensions;
 using FluentAssertions;
 using FluentAssertions.Execution;
@@ -9,7 +10,7 @@ namespace Catharsis.Repository.Tests;
 /// <summary>
 ///   <para>Tests set for class <see cref="MemoryRepository{TEntity}"/>.</para>
 /// </summary>
-public sealed class MemoryRepositoryTest : IDisposable
+public sealed class MemoryRepositoryTest : UnitTest
 {
   /// <summary>
   ///   <para>Performs testing of class constructor(s).</para>
@@ -261,7 +262,7 @@ public sealed class MemoryRepositoryTest : IDisposable
   {
     using var repository = new MemoryRepository<TestEntity>();
 
-    repository.Field("entities").To<IEnumerable<TestEntity>>().AsQueryable().Expression.ToString().Should().Be(repository.Expression.ToString());
+    repository.GetFieldValue< IEnumerable<TestEntity>>("entities").AsQueryable().Expression.ToString().Should().Be(repository.Expression.ToString());
   }
 
   /// <summary>
@@ -272,7 +273,7 @@ public sealed class MemoryRepositoryTest : IDisposable
   {
     using var repository = new MemoryRepository<TestEntity>();
 
-    repository.Field("entities").To<IEnumerable<TestEntity>>().AsQueryable().ElementType.Should().Be(repository.ElementType);
+    repository.GetFieldValue< IEnumerable<TestEntity>>("entities").AsQueryable().ElementType.Should().Be(repository.ElementType);
   }
 
   /// <summary>
@@ -283,7 +284,7 @@ public sealed class MemoryRepositoryTest : IDisposable
   {
     using var repository = new MemoryRepository<TestEntity>();
 
-    repository.Field("entities").To<IEnumerable<TestEntity>>().AsQueryable().Provider.ToString().Should().Be(repository.Provider.ToString());
+    repository.GetFieldValue<IEnumerable<TestEntity>>("entities").AsQueryable().Provider.ToString().Should().Be(repository.Provider.ToString());
   }
 
   public void Dispose()

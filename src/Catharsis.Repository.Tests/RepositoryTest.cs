@@ -1,4 +1,5 @@
-﻿using CommonServiceLocator;
+﻿using Catharsis.Commons;
+using CommonServiceLocator;
 using FluentAssertions;
 using FluentAssertions.Execution;
 using Unity.ServiceLocation;
@@ -9,7 +10,7 @@ namespace Catharsis.Repository.Tests;
 /// <summary>
 ///   <para>Tests set for class <see cref="Repository"/>.</para>
 /// </summary>
-public sealed class RepositoryTest : IDisposable
+public sealed class RepositoryTest : UnitTest
 {
   private readonly UnityServiceLocator serviceLocator = new UnityServiceLocator(Bootstrapper.Unity());
 

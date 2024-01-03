@@ -1,6 +1,7 @@
 ﻿using System.Configuration;
 using System.Data;
 using System.Data.Entity.Core.Objects;
+using Catharsis.Commons;
 using Catharsis.Extensions;
 using FluentAssertions;
 using FluentAssertions.Execution;
@@ -11,7 +12,7 @@ namespace Catharsis.Repository.Tests;
 /// <summary>
 ///   <para>Tests set for class <see cref="EFModelRepository{TEntity}"/>.</para>
 /// </summary>
-public sealed class EFModelRepositoryTest : IDisposable
+public sealed class EFModelRepositoryTest : UnitTest
 {
   private readonly string connectionString = ConfigurationManager.ConnectionStrings["SQLServer.EF"].ConnectionString;
 
@@ -34,16 +35,16 @@ public sealed class EFModelRepositoryTest : IDisposable
     using (var repository = new EFModelRepository<EFModelEntity>(objectContext))
     {
       repository.ObjectContext.Should().BeSameAs(objectContext);
-      repository.Field("objectSet").To<ObjectSet<EFModelEntity>>().Context.Should().BeSameAs(repository.Field("objectContext").To<ObjectContext>());
-      repository.Field("ownsContext").To<bool>().Should().BeFalse();
+      repository.GetFieldValue< ObjectSet<EFModelEntity>>("objectSet").Context.Should().BeSameAs(repository.GetFieldValue<ObjectContext>("objectContext"));
+      repository.GetFieldValue<bool>("ownsContext").Should().BeFalse();
     }
 
     using (var repository = new EFModelRepository<EFModelEntity>(connectionString))
     {
       repository.ObjectContext.Should().NotBeSameAs(objectContext);
       repository.ObjectContext.Connection.ConnectionString.Should().Be(connectionString);
-      repository.Field("objectSet").To<ObjectSet<EFModelEntity>>().Context.Should().BeSameAs(repository.Field("objectContext").To<ObjectContext>());
-      repository.Field("ownsContext").To<bool>().Should().BeTrue();
+      repository.GetFieldValue<ObjectSet<EFModelEntity>>("objectSet").Context.Should().BeSameAs(repository.GetFieldValue<ObjectContext>("objectContext"));
+      repository.GetFieldValue<bool>("ownsContext").Should().BeTrue();
     }
   }
 

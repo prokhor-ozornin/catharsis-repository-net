@@ -1,4 +1,5 @@
-﻿using FluentAssertions;
+﻿using Catharsis.Commons;
+using FluentAssertions;
 using FluentAssertions.Execution;
 using Xunit;
 
@@ -7,7 +8,7 @@ namespace Catharsis.Repository.Tests;
 /// <summary>
 ///   <para>Tests set for class <see cref="IRepositoryExtensions"/>.</para>
 /// </summary>
-public sealed class IRepositoryExtensionsTest
+public sealed class IRepositoryExtensionsTest : UnitTest
 {
   /// <summary>
   ///   <para>Performs testing of following methods :</para>

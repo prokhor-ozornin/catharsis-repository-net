@@ -1,13 +1,13 @@
-﻿using Unity;
+﻿using Catharsis.Commons;
+using Unity;
 
 namespace Catharsis.Repository.Tests;
 
 /// <summary>
 ///   <para></para>
 /// </summary>
-public abstract class RepositoryTestsBase
+public abstract class RepositoryTestsBase : UnitTest
 {
-
   /// <summary>
   ///   <para></para>
   /// </summary>
@@ -24,8 +24,10 @@ public abstract class RepositoryTestsBase
   /// <summary>
   ///   <para></para>
   /// </summary>
-  public void Dispose()
+  public override void Dispose()
   {
+    base.Dispose();
+
     //this.ioc.Dispose();
   }
 }

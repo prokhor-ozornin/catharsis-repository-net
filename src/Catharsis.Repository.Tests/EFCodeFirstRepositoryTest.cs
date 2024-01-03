@@ -1,4 +1,5 @@
 ﻿using System.Data;
+using Catharsis.Commons;
 using Microsoft.EntityFrameworkCore;
 using FluentAssertions;
 using FluentAssertions.Execution;
@@ -9,7 +10,7 @@ namespace Catharsis.Repository.Tests;
 /// <summary>
 ///   <para>Tests set for class <see cref="EFCodeFirstRepository{TEntity}"/>.</para>
 /// </summary>
-public sealed class EFCodeFirstRepositoryTest : IDisposable
+public sealed class EFCodeFirstRepositoryTest : UnitTest
 {
   /// <summary>
   ///   <para>Performs testing of class constructor(s).</para>

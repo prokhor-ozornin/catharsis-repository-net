@@ -1,17 +1,18 @@
 ﻿using System.Data;
-using Catharsis.Extensions;
 using NHibernate;
 using NHibernate.Cfg;
 using FluentAssertions;
 using FluentAssertions.Execution;
 using Xunit;
+using Catharsis.Commons;
+using Catharsis.Extensions;
 
 namespace Catharsis.Repository.Tests;
 
 /// <summary>
 ///   <para>Tests set for class <see cref="NHibernateRepository{TEntity}"/>.</para>
 /// </summary>
-public sealed class NHibernateRepositoryTest : IDisposable
+public sealed class NHibernateRepositoryTest : UnitTest
 {
   private readonly Configuration configuration = Bootstrapper.NHibernate();
 
@@ -37,7 +38,7 @@ public sealed class NHibernateRepositoryTest : IDisposable
     {
       session.SessionFactory.Should().BeSameAs(sessionFactory);
       session.FlushMode.Should().Be(FlushMode.Never);
-      repository.Field("ownsSession").To<bool>().Should().BeFalse();
+      repository.GetFieldValue<bool>("ownsSession").Should().BeFalse();
     }
     session.Dispose();
 
@@ -46,7 +47,7 @@ public sealed class NHibernateRepositoryTest : IDisposable
       session = repository.Session;
       session.SessionFactory.Should().BeSameAs(sessionFactory);
       session.FlushMode.Should().Be(FlushMode.Never);
-      repository.Field("ownsSession").To<bool>().Should().BeTrue();
+      repository.GetFieldValue<bool>("ownsSession").Should().BeTrue();
     }
 
     using (var repository = new NHibernateRepository<TestEntity>(configuration))
@@ -54,7 +55,7 @@ public sealed class NHibernateRepositoryTest : IDisposable
       session = repository.Session;
       session.SessionFactory.Should().NotBeSameAs(sessionFactory);
       session.FlushMode.Should().Be(FlushMode.Never);
-      repository.Field("ownsSession").To<bool>().Should().BeTrue();
+      repository.GetFieldValue<bool>("ownsSession").Should().BeTrue();
     }
   }
 

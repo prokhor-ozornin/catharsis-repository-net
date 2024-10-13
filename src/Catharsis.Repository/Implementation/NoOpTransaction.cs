@@ -10,7 +10,7 @@ internal sealed class NoOpTransaction : ITransaction
   {
     this.isolation = isolation ?? IsolationLevel.Unspecified;
 
-    if (isolation != null)
+    if (isolation is not null)
     {
       this.isolation = isolation.Value;
     }

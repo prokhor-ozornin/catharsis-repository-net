@@ -16,7 +16,7 @@ internal sealed class AdoNetTransaction : ITransaction
       connection.Open();
     }
 
-    Transaction = isolation != null ? connection.BeginTransaction(isolation.Value) : connection.BeginTransaction();
+    Transaction = isolation is not null ? connection.BeginTransaction(isolation.Value) : connection.BeginTransaction();
   }
 
   public void Dispose()

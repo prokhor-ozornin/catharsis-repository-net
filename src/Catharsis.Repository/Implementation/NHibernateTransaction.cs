@@ -18,7 +18,7 @@ internal sealed class NHibernateTransaction : ITransaction
   {
     Session = session;
     Isolation = isolation ?? IsolationLevel.Unspecified;
-    Transaction = isolation != null ? session.BeginTransaction(isolation.Value) : session.BeginTransaction();
+    Transaction = isolation is not null ? session.BeginTransaction(isolation.Value) : session.BeginTransaction();
   }
 
   public void Dispose()

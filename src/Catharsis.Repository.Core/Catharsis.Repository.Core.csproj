@@ -9,6 +9,7 @@
     <ProduceReferenceAssembly>False</ProduceReferenceAssembly>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
+    <DocumentationFile>API.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>

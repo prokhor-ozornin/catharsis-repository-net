@@ -12,7 +12,7 @@ namespace Catharsis.Repository.Tests.Implementation;
 /// </summary>
 public sealed class NHibernateTransactionTest
 {
-    private readonly ISessionFactory sessionFactory = Bootstrapper.NHibernate().BuildSessionFactory();
+    private readonly ISessionFactory _sessionFactory = Bootstrapper.NHibernate().BuildSessionFactory();
 
     /// <summary>
     ///   <para>Performs testing of class constructor(s).</para>
@@ -26,22 +26,22 @@ public sealed class NHibernateTransactionTest
             AssertionExtensions.Should(() => new NHibernateTransaction(null)).ThrowExactly<ArgumentNullException>();
         }
 
-        using var connection = sessionFactory.OpenSession();
+        using var connection = _sessionFactory.OpenSession();
 
         using (var transaction = new NHibernateTransaction(connection))
         {
             transaction.IsolationLevel.Should().Be(IsolationLevel.Unspecified);
-            transaction.Field("disposed").To<bool>().Should().BeFalse();
-            transaction.Field("wasCommitted").To<bool>().Should().BeFalse();
-            transaction.Field("wasRolledBack").To<bool>().Should().BeFalse();
+            transaction.GetFieldValue<bool>("_disposed").Should().BeFalse();
+            transaction.GetFieldValue<bool>("_wasCommitted").Should().BeFalse();
+            transaction.GetFieldValue<bool>("_wasRolledBack").Should().BeFalse();
         }
 
         using (var transaction = new NHibernateTransaction(connection, IsolationLevel.ReadCommitted))
         {
             transaction.IsolationLevel.Should().Be(IsolationLevel.ReadCommitted);
-            transaction.Field("disposed").To<bool>().Should().BeFalse();
-            transaction.Field("wasCommitted").To<bool>().Should().BeFalse();
-            transaction.Field("wasRolledBack").To<bool>().Should().BeFalse();
+            transaction.GetFieldValue<bool>("_disposed").Should().BeFalse();
+            transaction.GetFieldValue<bool>("_wasCommitted").Should().BeFalse();
+            transaction.GetFieldValue<bool>("_wasRolledBack").Should().BeFalse();
         }
     }
 
@@ -51,13 +51,13 @@ public sealed class NHibernateTransactionTest
     [Fact]
     public void Dispose_Method()
     {
-        using var connection = sessionFactory.OpenSession();
+        using var connection = _sessionFactory.OpenSession();
 
         var transaction = new NHibernateTransaction(connection);
         transaction.Dispose();
-        transaction.Field("disposed").To<bool>().Should().BeTrue();
-        transaction.Field("wasCommitted").To<bool>().Should().BeFalse();
-        transaction.Field("wasRolledBack").To<bool>().Should().BeFalse();
+        transaction.GetFieldValue<bool>("_disposed").Should().BeTrue();
+        transaction.GetFieldValue<bool>("_wasCommitted").Should().BeFalse();
+        transaction.GetFieldValue<bool>("_wasRolledBack").Should().BeFalse();
         AssertionExtensions.Should(() => transaction.Dispose()).ThrowExactly<ObjectDisposedException>();
     }
 
@@ -67,13 +67,13 @@ public sealed class NHibernateTransactionTest
     [Fact]
     public void Commit_Method()
     {
-        using var connection = sessionFactory.OpenSession();
+        using var connection = _sessionFactory.OpenSession();
 
         var transaction = new NHibernateTransaction(connection);
         transaction.Commit().Should().BeSameAs(transaction);
-        transaction.Field("disposed").To<bool>().Should().BeFalse();
-        transaction.Field("wasCommitted").To<bool>().Should().BeTrue();
-        transaction.Field("wasRolledBack").To<bool>().Should().BeFalse();
+        transaction.GetFieldValue<bool>("_disposed").Should().BeFalse();
+        transaction.GetFieldValue<bool>("_wasCommitted").Should().BeTrue();
+        transaction.GetFieldValue<bool>("_wasRolledBack").Should().BeFalse();
     }
 
     /// <summary>
@@ -82,12 +82,12 @@ public sealed class NHibernateTransactionTest
     [Fact]
     public void Rollback_Method()
     {
-        using var connection = sessionFactory.OpenSession();
+        using var connection = _sessionFactory.OpenSession();
 
         var transaction = new NHibernateTransaction(connection);
         transaction.Rollback().Should().BeSameAs(transaction);
-        transaction.Field("disposed").To<bool>().Should().BeFalse();
-        transaction.Field("wasCommitted").To<bool>().Should().BeFalse();
-        transaction.Field("wasRolledBack").To<bool>().Should().BeTrue();
+        transaction.GetFieldValue<bool>("_disposed").Should().BeFalse();
+        transaction.GetFieldValue<bool>("_wasCommitted").Should().BeFalse();
+        transaction.GetFieldValue<bool>("_wasRolledBack").Should().BeTrue();
     }
 }

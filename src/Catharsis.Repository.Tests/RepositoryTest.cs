@@ -12,7 +12,7 @@ namespace Catharsis.Repository.Tests;
 /// </summary>
 public sealed class RepositoryTest : UnitTest
 {
-  private readonly UnityServiceLocator serviceLocator = new UnityServiceLocator(Bootstrapper.Unity());
+  private readonly UnityServiceLocator _serviceLocator = new(Bootstrapper.Unity());
 
   /// <summary>
   ///   <para>Performs testing of <see cref="Repository.For{TEntity}()"/> method.</para>
@@ -25,7 +25,7 @@ public sealed class RepositoryTest : UnitTest
       AssertionExtensions.Should(() => Repository.For<TestEntity>()).ThrowExactly<InvalidOperationException>();
     }
 
-    ServiceLocator.SetLocatorProvider(() => serviceLocator);
+    ServiceLocator.SetLocatorProvider(() => _serviceLocator);
 
     Repository.For<TestEntity>().Should().NotBeNull();
     Repository.For<TestEntity>().Should().BeSameAs(Repository.For<TestEntity>());

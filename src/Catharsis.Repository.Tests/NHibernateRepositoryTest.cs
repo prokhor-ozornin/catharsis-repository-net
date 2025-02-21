@@ -14,7 +14,7 @@ namespace Catharsis.Repository.Tests;
 /// </summary>
 public sealed class NHibernateRepositoryTest : UnitTest
 {
-  private readonly Configuration configuration = Bootstrapper.NHibernate();
+  private readonly Configuration _configuration = Bootstrapper.NHibernate();
 
   /// <summary>
   ///   <para>Performs testing of class constructor(s).</para>
@@ -31,7 +31,7 @@ public sealed class NHibernateRepositoryTest : UnitTest
       AssertionExtensions.Should(() => new NHibernateRepository<TestEntity>((Configuration) null)).ThrowExactly<ArgumentNullException>();
     }
 
-    using var sessionFactory = configuration.BuildSessionFactory();
+    using var sessionFactory = _configuration.BuildSessionFactory();
 
     var session = sessionFactory.OpenSession();
     using (var repository = new NHibernateRepository<TestEntity>(session))
@@ -50,7 +50,7 @@ public sealed class NHibernateRepositoryTest : UnitTest
       repository.GetFieldValue<bool>("ownsSession").Should().BeTrue();
     }
 
-    using (var repository = new NHibernateRepository<TestEntity>(configuration))
+    using (var repository = new NHibernateRepository<TestEntity>(_configuration))
     {
       session = repository.Session;
       session.SessionFactory.Should().NotBeSameAs(sessionFactory);
@@ -67,7 +67,7 @@ public sealed class NHibernateRepositoryTest : UnitTest
   {
     var entity = new TestEntity();
 
-    using var repository = new NHibernateRepository<TestEntity>(configuration);
+    using var repository = new NHibernateRepository<TestEntity>(_configuration);
 
     repository.Should().BeEmpty();
 
@@ -89,12 +89,12 @@ public sealed class NHibernateRepositoryTest : UnitTest
   {
     using (new AssertionScope())
     {
-      AssertionExtensions.Should(() => new NHibernateRepository<TestEntity>(configuration).Delete(null)).ThrowExactly<ArgumentNullException>();
+      AssertionExtensions.Should(() => new NHibernateRepository<TestEntity>(_configuration).Delete(null)).ThrowExactly<ArgumentNullException>();
     }
 
     var entity = new TestEntity();
 
-    using var repository = new NHibernateRepository<TestEntity>(configuration);
+    using var repository = new NHibernateRepository<TestEntity>(_configuration);
 
     repository.Transaction(() => repository.Delete(entity).Should().BeSameAs(repository));
       
@@ -112,7 +112,7 @@ public sealed class NHibernateRepositoryTest : UnitTest
   [Fact]
   public void DeleteAll_Method()
   {
-    using var repository = new NHibernateRepository<TestEntity>(configuration);
+    using var repository = new NHibernateRepository<TestEntity>(_configuration);
 
     repository.Transaction(() => repository.DeleteAll().Should().BeSameAs(repository));
     repository.Should().BeEmpty();
@@ -132,7 +132,7 @@ public sealed class NHibernateRepositoryTest : UnitTest
   {
     var entity = new TestEntity();
 
-    using var repository = new NHibernateRepository<TestEntity>(configuration);
+    using var repository = new NHibernateRepository<TestEntity>(_configuration);
 
     repository.Persist(entity).Dispose();
     AssertionExtensions.Should(() => repository.Single()).ThrowExactly<ObjectDisposedException>();
@@ -148,7 +148,7 @@ public sealed class NHibernateRepositoryTest : UnitTest
   {
     var entity = new TestEntity();
 
-    using var repository = new NHibernateRepository<TestEntity>(configuration);
+    using var repository = new NHibernateRepository<TestEntity>(_configuration);
 
     repository.GetEnumerator().MoveNext().Should().BeFalse();
 
@@ -166,12 +166,12 @@ public sealed class NHibernateRepositoryTest : UnitTest
   {
     using (new AssertionScope())
     {
-      AssertionExtensions.Should(() => new NHibernateRepository<TestEntity>(configuration).Persist(null)).ThrowExactly<ArgumentNullException>();
+      AssertionExtensions.Should(() => new NHibernateRepository<TestEntity>(_configuration).Persist(null)).ThrowExactly<ArgumentNullException>();
     }
 
     var entity = new TestEntity { Name = "first" };
 
-    using var repository = new NHibernateRepository<TestEntity>(configuration);
+    using var repository = new NHibernateRepository<TestEntity>(_configuration);
 
     repository.Should().BeEmpty();
 
@@ -196,12 +196,12 @@ public sealed class NHibernateRepositoryTest : UnitTest
   {
     using (new AssertionScope())
     {
-      AssertionExtensions.Should(() => new NHibernateRepository<TestEntity>(configuration).Refresh(null)).ThrowExactly<ArgumentNullException>();
+      AssertionExtensions.Should(() => new NHibernateRepository<TestEntity>(_configuration).Refresh(null)).ThrowExactly<ArgumentNullException>();
     }
 
     var entity = new TestEntity { Name = "first" };
 
-    using var repository = new NHibernateRepository<TestEntity>(configuration);
+    using var repository = new NHibernateRepository<TestEntity>(_configuration);
 
     repository.Refresh(entity).Should().BeSameAs(repository);
     entity.Id.Should().Be(0);
@@ -225,7 +225,7 @@ public sealed class NHibernateRepositoryTest : UnitTest
   {
     var entity = new TestEntity();
 
-    using var repository = new NHibernateRepository<TestEntity>(configuration);
+    using var repository = new NHibernateRepository<TestEntity>(_configuration);
 
     using (repository.Transaction())
     {
@@ -297,7 +297,7 @@ public sealed class NHibernateRepositoryTest : UnitTest
   [Fact]
   public void Expression_Property()
   {
-    using var repository = new NHibernateRepository<TestEntity>(configuration);
+    using var repository = new NHibernateRepository<TestEntity>(_configuration);
 
     repository.Session.Query<TestEntity>().Expression.ToString().Should().Be(repository.Expression.ToString());
   }
@@ -308,7 +308,7 @@ public sealed class NHibernateRepositoryTest : UnitTest
   [Fact]
   public void ElementType_Property()
   {
-    using var repository = new NHibernateRepository<TestEntity>(configuration);
+    using var repository = new NHibernateRepository<TestEntity>(_configuration);
 
     repository.Session.Query<TestEntity>().ElementType.Should().Be(repository.ElementType);
   }
@@ -319,14 +319,14 @@ public sealed class NHibernateRepositoryTest : UnitTest
   [Fact]
   public void Provider_Property()
   {
-    using var repository = new NHibernateRepository<TestEntity>(configuration);
+    using var repository = new NHibernateRepository<TestEntity>(_configuration);
 
     repository.Session.Query<TestEntity>().Provider.ToString().Should().Be(repository.Provider.ToString());
   }
 
   public void Dispose()
   {
-    using var repository = new NHibernateRepository<TestEntity>(configuration);
+    using var repository = new NHibernateRepository<TestEntity>(_configuration);
 
     repository.DeleteAll().Commit();
   }

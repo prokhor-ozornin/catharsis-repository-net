@@ -28,6 +28,6 @@ public abstract class RepositoryTestsBase : UnitTest
   {
     base.Dispose();
 
-    //this.ioc.Dispose();
+    //ioc.Dispose();
   }
 }

@@ -4,15 +4,15 @@ namespace Catharsis.Repository;
 
 internal sealed class NoOpTransaction : ITransaction
 {
-  private readonly IsolationLevel isolation;
+  private readonly IsolationLevel _isolation;
 
   public NoOpTransaction(IsolationLevel? isolation = null)
   {
-    this.isolation = isolation ?? IsolationLevel.Unspecified;
+    _isolation = isolation ?? IsolationLevel.Unspecified;
 
     if (isolation is not null)
     {
-      this.isolation = isolation.Value;
+      _isolation = isolation.Value;
     }
   }
 
@@ -24,5 +24,5 @@ internal sealed class NoOpTransaction : ITransaction
 
   public ITransaction Rollback() => this;
 
-  public IsolationLevel IsolationLevel => isolation;
+  public IsolationLevel IsolationLevel => _isolation;
 }

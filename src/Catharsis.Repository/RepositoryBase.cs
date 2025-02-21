@@ -6,17 +6,17 @@ namespace Catharsis.Repository;
 
 public abstract class RepositoryBase<TEntity> : IRepository<TEntity> where TEntity : class
 {
-  private bool disposed;
+  private bool _disposed;
 
   public virtual void Dispose()
   {
-    if (disposed)
+    if (_disposed)
     {
       return;
     }
 
     OnDisposing();
-    disposed = true;
+    _disposed = true;
   }
 
   public abstract IEnumerator<TEntity> GetEnumerator();

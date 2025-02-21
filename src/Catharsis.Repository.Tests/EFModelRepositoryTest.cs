@@ -14,7 +14,7 @@ namespace Catharsis.Repository.Tests;
 /// </summary>
 public sealed class EFModelRepositoryTest : UnitTest
 {
-  private readonly string connectionString = ConfigurationManager.ConnectionStrings["SQLServer.EF"].ConnectionString;
+  private readonly string _connectionString = ConfigurationManager.ConnectionStrings["SQLServer.EF"].ConnectionString;
 
   /// <summary>
   ///   <para>Performs testing of class constructor(s).</para>
@@ -31,7 +31,7 @@ public sealed class EFModelRepositoryTest : UnitTest
       AssertionExtensions.Should(() => new EFModelRepository<EFModelEntity>(string.Empty)).ThrowExactly<ArgumentException>();
     }
 
-    var objectContext = new ObjectContext(connectionString);
+    var objectContext = new ObjectContext(_connectionString);
     using (var repository = new EFModelRepository<EFModelEntity>(objectContext))
     {
       repository.ObjectContext.Should().BeSameAs(objectContext);
@@ -39,10 +39,10 @@ public sealed class EFModelRepositoryTest : UnitTest
       repository.GetFieldValue<bool>("ownsContext").Should().BeFalse();
     }
 
-    using (var repository = new EFModelRepository<EFModelEntity>(connectionString))
+    using (var repository = new EFModelRepository<EFModelEntity>(_connectionString))
     {
       repository.ObjectContext.Should().NotBeSameAs(objectContext);
-      repository.ObjectContext.Connection.ConnectionString.Should().Be(connectionString);
+      repository.ObjectContext.Connection.ConnectionString.Should().Be(_connectionString);
       repository.GetFieldValue<ObjectSet<EFModelEntity>>("objectSet").Context.Should().BeSameAs(repository.GetFieldValue<ObjectContext>("objectContext"));
       repository.GetFieldValue<bool>("ownsContext").Should().BeTrue();
     }
@@ -56,7 +56,7 @@ public sealed class EFModelRepositoryTest : UnitTest
   {
     var entity = new EFModelEntity();
 
-    using var repository = new EFModelRepository<EFModelEntity>(connectionString);
+    using var repository = new EFModelRepository<EFModelEntity>(_connectionString);
 
     repository.Should().BeEmpty();
 
@@ -78,12 +78,12 @@ public sealed class EFModelRepositoryTest : UnitTest
   {
     using (new AssertionScope())
     {
-      AssertionExtensions.Should(() => new EFModelRepository<EFModelEntity>(connectionString).Delete(null)).ThrowExactly<ArgumentNullException>();
+      AssertionExtensions.Should(() => new EFModelRepository<EFModelEntity>(_connectionString).Delete(null)).ThrowExactly<ArgumentNullException>();
     }
 
     var entity = new EFModelEntity();
 
-    using var repository = new EFModelRepository<EFModelEntity>(connectionString);
+    using var repository = new EFModelRepository<EFModelEntity>(_connectionString);
 
     AssertionExtensions.Should(() => repository.Delete(entity)).ThrowExactly<InvalidOperationException>();
     repository.Persist(entity).Delete(entity).Commit().Should().NotBeNullOrEmpty();
@@ -95,7 +95,7 @@ public sealed class EFModelRepositoryTest : UnitTest
   [Fact]
   public void DeleteAll_Method()
   {
-    using var repository = new EFModelRepository<EFModelEntity>(connectionString);
+    using var repository = new EFModelRepository<EFModelEntity>(_connectionString);
 
     repository.DeleteAll().Should().BeSameAs(repository);
     repository.Commit().Should().BeEmpty();
@@ -115,7 +115,7 @@ public sealed class EFModelRepositoryTest : UnitTest
   {
     var entity = new EFModelEntity();
 
-    using var repository = new EFModelRepository<EFModelEntity>(connectionString);
+    using var repository = new EFModelRepository<EFModelEntity>(_connectionString);
 
     repository.Persist(entity).Dispose();
     AssertionExtensions.Should(() => repository.Single()).ThrowExactly<ObjectDisposedException>();
@@ -131,7 +131,7 @@ public sealed class EFModelRepositoryTest : UnitTest
   {
     var entity = new EFModelEntity();
 
-    using var repository = new EFModelRepository<EFModelEntity>(connectionString);
+    using var repository = new EFModelRepository<EFModelEntity>(_connectionString);
 
     repository.GetEnumerator().MoveNext().Should().BeFalse();
 
@@ -149,12 +149,12 @@ public sealed class EFModelRepositoryTest : UnitTest
   {
     using (new AssertionScope())
     {
-      AssertionExtensions.Should(() => new EFModelRepository<EFModelEntity>(connectionString).Persist(null)).ThrowExactly<ArgumentNullException>();
+      AssertionExtensions.Should(() => new EFModelRepository<EFModelEntity>(_connectionString).Persist(null)).ThrowExactly<ArgumentNullException>();
     }
 
     var entity = new EFModelEntity { Name = "first" };
 
-    using var repository = new EFModelRepository<EFModelEntity>(connectionString);
+    using var repository = new EFModelRepository<EFModelEntity>(_connectionString);
 
     repository.Should().BeEmpty();
 
@@ -180,12 +180,12 @@ public sealed class EFModelRepositoryTest : UnitTest
   {
     using (new AssertionScope())
     {
-      AssertionExtensions.Should(() => new EFModelRepository<EFModelEntity>(connectionString).Refresh(null)).ThrowExactly<ArgumentNullException>();
+      AssertionExtensions.Should(() => new EFModelRepository<EFModelEntity>(_connectionString).Refresh(null)).ThrowExactly<ArgumentNullException>();
     }
 
     var entity = new EFModelEntity { Name = "first" };
 
-    using var repository = new EFModelRepository<EFModelEntity>(connectionString);
+    using var repository = new EFModelRepository<EFModelEntity>(_connectionString);
 
     AssertionExtensions.Should(() => repository.Refresh(entity)).ThrowExactly<InvalidOperationException>();
 
@@ -205,7 +205,7 @@ public sealed class EFModelRepositoryTest : UnitTest
   [Fact]
   public void Transaction_Method()
   {
-    using var repository = new EFModelRepository<EFModelEntity>(connectionString);
+    using var repository = new EFModelRepository<EFModelEntity>(_connectionString);
 
     repository.Transaction().Should().NotBeNull();
   }
@@ -216,7 +216,7 @@ public sealed class EFModelRepositoryTest : UnitTest
   [Fact]
   public void Expression_Property()
   {
-    using var repository = new EFModelRepository<EFModelEntity>(connectionString);
+    using var repository = new EFModelRepository<EFModelEntity>(_connectionString);
 
     repository.ObjectContext.CreateObjectSet<EFModelEntity>().AsQueryable().Expression.ToString().Should().Be(repository.Expression.ToString());
   }
@@ -227,7 +227,7 @@ public sealed class EFModelRepositoryTest : UnitTest
   [Fact]
   public void ElementType_Property()
   {
-    using var repository = new EFModelRepository<EFModelEntity>(connectionString);
+    using var repository = new EFModelRepository<EFModelEntity>(_connectionString);
 
     repository.ObjectContext.CreateObjectSet<EFModelEntity>().AsQueryable().ElementType.Should().Be(repository.ElementType);
   }
@@ -238,14 +238,14 @@ public sealed class EFModelRepositoryTest : UnitTest
   [Fact]
   public void Provider_Property()
   {
-    using var repository = new EFModelRepository<EFModelEntity>(connectionString);
+    using var repository = new EFModelRepository<EFModelEntity>(_connectionString);
 
     repository.ObjectContext.CreateObjectSet<EFModelEntity>().AsQueryable().Provider.ToString().Should().Be(repository.Provider.ToString());
   }
 
   public void Dispose()
   {
-    using var repository = new EFModelRepository<EFModelEntity>(connectionString);
+    using var repository = new EFModelRepository<EFModelEntity>(_connectionString);
 
     repository.DeleteAll().Commit();
   }

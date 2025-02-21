@@ -11,7 +11,7 @@ namespace Catharsis.Repository;
 /// <remarks>This repository implementation is not thread-safe.</remarks>
 public class MemoryRepository<TEntity> : RepositoryBase<TEntity> where TEntity : class
 {
-  private readonly ICollection<TEntity> entities = new HashSet<TEntity>();
+  private readonly ICollection<TEntity> _entities = new HashSet<TEntity>();
 
   /// <summary>
   ///   <para>Saves all non-persisted changes to the underlying data storage facility by persisting modified entities and deleting those which have been marked as deleted.</para>
@@ -29,7 +29,7 @@ public class MemoryRepository<TEntity> : RepositoryBase<TEntity> where TEntity :
   /// <seealso cref="DeleteAll()"/>
   public override IRepository<TEntity> Delete(TEntity entity)
   {
-    entities.Remove(entity);
+    _entities.Remove(entity);
 
     return this;
   }
@@ -42,7 +42,7 @@ public class MemoryRepository<TEntity> : RepositoryBase<TEntity> where TEntity :
   /// <seealso cref="Delete(TEntity)"/>
   public override IRepository<TEntity> DeleteAll()
   {
-    entities.Clear();
+    _entities.Clear();
     
     return this;
   }
@@ -51,7 +51,7 @@ public class MemoryRepository<TEntity> : RepositoryBase<TEntity> where TEntity :
   ///   <para>Returns enumerator to iterate through entities of <typeparamref name="TEntity"/> type in the underlying data storage.</para>
   /// </summary>
   /// <returns>Enumerator for iteration through repository's data.</returns>
-  public override IEnumerator<TEntity> GetEnumerator() => entities.GetEnumerator();
+  public override IEnumerator<TEntity> GetEnumerator() => _entities.GetEnumerator();
 
   /// <summary>
   ///   <para>Persists state of specified entity in the underlying data storage. Either a new entity will be created, or a state of the already existing one will be updated when either <see cref="Commit()"/> method is called or this call is made inside a transaction.</para>
@@ -61,7 +61,7 @@ public class MemoryRepository<TEntity> : RepositoryBase<TEntity> where TEntity :
   /// <remarks>In this implementation the state of persisted entities in data storage is always the same as current state of these objects.</remarks>
   public override IRepository<TEntity> Persist(TEntity entity)
   {
-    entities.Add(entity);
+    _entities.Add(entity);
 
     return this;
   }
@@ -84,15 +84,15 @@ public class MemoryRepository<TEntity> : RepositoryBase<TEntity> where TEntity :
   /// <summary>
   ///   <para>Implementation of <see cref="IQueryable{TEntity}.Expression"/> property.</para>
   /// </summary>
-  public override Expression Expression => entities.AsQueryable().Expression;
+  public override Expression Expression => _entities.AsQueryable().Expression;
 
   /// <summary>
   ///   <para>Implementation of <see cref="IQueryable{TEntity}.ElementType"/> property.</para>
   /// </summary>
-  public override Type ElementType => entities.AsQueryable().ElementType;
+  public override Type ElementType => _entities.AsQueryable().ElementType;
 
   /// <summary>
   ///   <para>Implementation of <see cref="IQueryable{TEntity}.Provider"/> property.</para>
   /// </summary>
-  public override IQueryProvider Provider => entities.AsQueryable().Provider;
+  public override IQueryProvider Provider => _entities.AsQueryable().Provider;
 }

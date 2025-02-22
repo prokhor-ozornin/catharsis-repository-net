@@ -12,7 +12,7 @@ namespace Catharsis.Repository.Tests.Implementation;
 /// </summary>
 public sealed class NHibernateTransactionTest
 {
-    private readonly ISessionFactory _sessionFactory = Bootstrapper.NHibernate().BuildSessionFactory();
+    private ISessionFactory SessionFactory { get; } = Bootstrapper.NHibernate().BuildSessionFactory();
 
     /// <summary>
     ///   <para>Performs testing of class constructor(s).</para>
@@ -26,7 +26,7 @@ public sealed class NHibernateTransactionTest
             AssertionExtensions.Should(() => new NHibernateTransaction(null)).ThrowExactly<ArgumentNullException>();
         }
 
-        using var connection = _sessionFactory.OpenSession();
+        using var connection = SessionFactory.OpenSession();
 
         using (var transaction = new NHibernateTransaction(connection))
         {
@@ -51,7 +51,7 @@ public sealed class NHibernateTransactionTest
     [Fact]
     public void Dispose_Method()
     {
-        using var connection = _sessionFactory.OpenSession();
+        using var connection = SessionFactory.OpenSession();
 
         var transaction = new NHibernateTransaction(connection);
         transaction.Dispose();
@@ -67,7 +67,7 @@ public sealed class NHibernateTransactionTest
     [Fact]
     public void Commit_Method()
     {
-        using var connection = _sessionFactory.OpenSession();
+        using var connection = SessionFactory.OpenSession();
 
         var transaction = new NHibernateTransaction(connection);
         transaction.Commit().Should().BeSameAs(transaction);
@@ -82,7 +82,7 @@ public sealed class NHibernateTransactionTest
     [Fact]
     public void Rollback_Method()
     {
-        using var connection = _sessionFactory.OpenSession();
+        using var connection = SessionFactory.OpenSession();
 
         var transaction = new NHibernateTransaction(connection);
         transaction.Rollback().Should().BeSameAs(transaction);

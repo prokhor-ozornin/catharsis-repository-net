@@ -12,7 +12,7 @@ namespace Catharsis.Repository.Tests;
 /// </summary>
 public sealed class ObjectExtensionsTest : UnitTest
 {
-  private readonly UnityServiceLocator _serviceLocator = new(Bootstrapper.Unity());
+  private UnityServiceLocator ServiceLocator { get; } = new(Bootstrapper.Unity());
 
   /// <summary>
   ///   <para>Performs testing of <see cref="ObjectExtensions.Delete{TEntity}(TEntity)"/> method.</para>
@@ -23,13 +23,13 @@ public sealed class ObjectExtensionsTest : UnitTest
     using (new AssertionScope())
     {
       AssertionExtensions.Should(() => ObjectExtensions.Delete<TestEntity>(null)).ThrowExactly<ArgumentNullException>();
-      AssertionExtensions.Should(() => ServiceLocator.Current.GetInstance<IRepository<TestEntity>>()).ThrowExactly<InvalidOperationException>();
+      AssertionExtensions.Should(() => CommonServiceLocator.ServiceLocator.Current.GetInstance<IRepository<TestEntity>>()).ThrowExactly<InvalidOperationException>();
     }
 
-    ServiceLocator.SetLocatorProvider(() => _serviceLocator);
+    CommonServiceLocator.ServiceLocator.SetLocatorProvider(() => ServiceLocator);
 
     var entity = new TestEntity();
-    using (var repository = ServiceLocator.Current.GetInstance<IRepository<TestEntity>>())
+    using (var repository = CommonServiceLocator.ServiceLocator.Current.GetInstance<IRepository<TestEntity>>())
     {
       repository.Transaction(() => entity.Delete().Should().BeSameAs(entity));
       repository.Transaction(() => entity.Persist());
@@ -50,13 +50,13 @@ public sealed class ObjectExtensionsTest : UnitTest
     using (new AssertionScope())
     {
       AssertionExtensions.Should(() => ObjectExtensions.Persist<TestEntity>(null)).ThrowExactly<ArgumentNullException>();
-      AssertionExtensions.Should(() => ServiceLocator.Current.GetInstance<IRepository<TestEntity>>()).ThrowExactly<InvalidOperationException>();
+      AssertionExtensions.Should(() => CommonServiceLocator.ServiceLocator.Current.GetInstance<IRepository<TestEntity>>()).ThrowExactly<InvalidOperationException>();
     }
 
-    ServiceLocator.SetLocatorProvider(() => _serviceLocator);
+    CommonServiceLocator.ServiceLocator.SetLocatorProvider(() => ServiceLocator);
 
     var entity = new TestEntity { Name = "first" };
-    using var repository = ServiceLocator.Current.GetInstance<IRepository<TestEntity>>();
+    using var repository = CommonServiceLocator.ServiceLocator.Current.GetInstance<IRepository<TestEntity>>();
 
     repository.Should().BeEmpty();
 
@@ -81,13 +81,13 @@ public sealed class ObjectExtensionsTest : UnitTest
     using (new AssertionScope())
     {
       AssertionExtensions.Should(() => ObjectExtensions.Refresh<TestEntity>(null)).ThrowExactly<ArgumentNullException>();
-      AssertionExtensions.Should(() => ServiceLocator.Current.GetInstance<IRepository<TestEntity>>()).ThrowExactly<InvalidOperationException>();
+      AssertionExtensions.Should(() => CommonServiceLocator.ServiceLocator.Current.GetInstance<IRepository<TestEntity>>()).ThrowExactly<InvalidOperationException>();
     }
 
-    ServiceLocator.SetLocatorProvider(() => _serviceLocator);
+    CommonServiceLocator.ServiceLocator.SetLocatorProvider(() => ServiceLocator);
 
     var entity = new TestEntity { Name = "first" };
-    using var repository = ServiceLocator.Current.GetInstance<IRepository<TestEntity>>();
+    using var repository = CommonServiceLocator.ServiceLocator.Current.GetInstance<IRepository<TestEntity>>();
 
     entity.Refresh().Should().BeSameAs(entity);
     entity.Id.Should().Be(0);
@@ -105,6 +105,6 @@ public sealed class ObjectExtensionsTest : UnitTest
 
   public void Dispose()
   {
-    ServiceLocator.SetLocatorProvider(null);
+    CommonServiceLocator.ServiceLocator.SetLocatorProvider(null);
   }
 }

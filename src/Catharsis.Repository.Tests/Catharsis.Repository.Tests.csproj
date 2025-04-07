@@ -15,8 +15,8 @@
   <ItemGroup>
     <PackageReference Include="CommonServiceLocator" Version="2.0.7" />
     <PackageReference Include="EntityFramework" Version="6.5.1" />
-    <PackageReference Include="FluentAssertions" Version="8.0.1" />
-    <PackageReference Include="FluentNHibernate" Version="3.4.0" />
+    <PackageReference Include="FluentAssertions" Version="8.2.0" />
+    <PackageReference Include="FluentNHibernate" Version="3.4.1" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.13.0" />
     <PackageReference Include="Unity" Version="5.11.10" />
     <PackageReference Include="Unity.ServiceLocation" Version="5.11.1" />

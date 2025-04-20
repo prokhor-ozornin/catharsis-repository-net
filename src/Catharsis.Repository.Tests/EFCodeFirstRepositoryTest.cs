@@ -58,10 +58,7 @@ public sealed class EFCodeFirstRepositoryTest : UnitTest
   [Fact]
   public void Delete_Method()
   {
-    using (new AssertionScope())
-    {
-      AssertionExtensions.Should(() => new EFCodeFirstRepository<TestEntity>(new TestContext()).Delete(null)).ThrowExactly<ArgumentNullException>();
-    }
+    AssertionExtensions.Should(() => new EFCodeFirstRepository<TestEntity>(new TestContext()).Delete(null)).ThrowExactly<ArgumentNullException>();
 
     var entity = new TestEntity();
 
@@ -160,10 +157,7 @@ public sealed class EFCodeFirstRepositoryTest : UnitTest
   [Fact]
   public void Refresh_Method()
   {
-    using (new AssertionScope())
-    {
-      AssertionExtensions.Should(() => new EFCodeFirstRepository<TestEntity>(new TestContext()).Refresh(null)).ThrowExactly<ArgumentNullException>();
-    }
+    AssertionExtensions.Should(() => new EFCodeFirstRepository<TestEntity>(new TestContext()).Refresh(null)).ThrowExactly<ArgumentNullException>();
 
     var entity = new TestEntity { Name = "first" };
 

@@ -76,10 +76,7 @@ public sealed class EFModelRepositoryTest : UnitTest
   [Fact]
   public void Delete_Method()
   {
-    using (new AssertionScope())
-    {
-      AssertionExtensions.Should(() => new EFModelRepository<EFModelEntity>(ConnectionString).Delete(null)).ThrowExactly<ArgumentNullException>();
-    }
+    AssertionExtensions.Should(() => new EFModelRepository<EFModelEntity>(ConnectionString).Delete(null)).ThrowExactly<ArgumentNullException>();
 
     var entity = new EFModelEntity();
 
@@ -178,10 +175,7 @@ public sealed class EFModelRepositoryTest : UnitTest
   [Fact]
   public void Refresh_Method()
   {
-    using (new AssertionScope())
-    {
-      AssertionExtensions.Should(() => new EFModelRepository<EFModelEntity>(ConnectionString).Refresh(null)).ThrowExactly<ArgumentNullException>();
-    }
+    AssertionExtensions.Should(() => new EFModelRepository<EFModelEntity>(ConnectionString).Refresh(null)).ThrowExactly<ArgumentNullException>();
 
     var entity = new EFModelEntity { Name = "first" };
 

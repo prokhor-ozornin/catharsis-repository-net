@@ -12,7 +12,7 @@ namespace Catharsis.Repository.Tests;
 /// <summary>
 ///   <para>Tests set for class <see cref="NHibernateRepository{TEntity}"/>.</para>
 /// </summary>
-public sealed class NHibernateRepositoryTest : UnitTest
+public sealed class NHibernateRepositoryTest : Test
 {
   private Configuration Configuration { get; } = Bootstrapper.NHibernate();
 

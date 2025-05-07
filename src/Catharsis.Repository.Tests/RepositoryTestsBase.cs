@@ -6,7 +6,7 @@ namespace Catharsis.Repository.Tests;
 /// <summary>
 ///   <para></para>
 /// </summary>
-public abstract class RepositoryTestsBase : UnitTest
+public abstract class RepositoryTestsBase : Test
 {
   /// <summary>
   ///   <para></para>

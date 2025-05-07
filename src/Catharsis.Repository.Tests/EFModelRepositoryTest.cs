@@ -12,7 +12,7 @@ namespace Catharsis.Repository.Tests;
 /// <summary>
 ///   <para>Tests set for class <see cref="EFModelRepository{TEntity}"/>.</para>
 /// </summary>
-public sealed class EFModelRepositoryTest : UnitTest
+public sealed class EFModelRepositoryTest : Test
 {
   private string ConnectionString { get; } = ConfigurationManager.ConnectionStrings["SQLServer.EF"].ConnectionString;
 

@@ -10,7 +10,7 @@ namespace Catharsis.Repository.Tests;
 /// <summary>
 ///   <para>Tests set for class <see cref="MemoryRepository{TEntity}"/>.</para>
 /// </summary>
-public sealed class MemoryRepositoryTest : UnitTest
+public sealed class MemoryRepositoryTest : Test
 {
   /// <summary>
   ///   <para>Performs testing of class constructor(s).</para>

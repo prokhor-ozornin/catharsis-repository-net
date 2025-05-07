@@ -10,7 +10,7 @@ namespace Catharsis.Repository.Tests;
 /// <summary>
 ///   <para>Tests set for class <see cref="EFCodeFirstRepository{TEntity}"/>.</para>
 /// </summary>
-public sealed class EFCodeFirstRepositoryTest : UnitTest
+public sealed class EFCodeFirstRepositoryTest : Test
 {
   /// <summary>
   ///   <para>Performs testing of class constructor(s).</para>

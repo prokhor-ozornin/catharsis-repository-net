@@ -8,7 +8,7 @@ namespace Catharsis.Repository.Tests;
 /// <summary>
 ///   <para>Tests set for class <see cref="IRepositoryExtensions"/>.</para>
 /// </summary>
-public sealed class IRepositoryExtensionsTest : UnitTest
+public sealed class IRepositoryExtensionsTest : Test
 {
   /// <summary>
   ///   <para>Performs testing of following methods :</para>

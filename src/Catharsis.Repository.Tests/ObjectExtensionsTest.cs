@@ -10,7 +10,7 @@ namespace Catharsis.Repository.Tests;
 /// <summary>
 ///   <para>Tests set for class <see cref="ObjectExtensions"/>.</para>
 /// </summary>
-public sealed class ObjectExtensionsTest : UnitTest
+public sealed class ObjectExtensionsTest : Test
 {
   private UnityServiceLocator ServiceLocator { get; } = new(Bootstrapper.Unity());
 

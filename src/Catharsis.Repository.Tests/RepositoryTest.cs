@@ -10,7 +10,7 @@ namespace Catharsis.Repository.Tests;
 /// <summary>
 ///   <para>Tests set for class <see cref="Repository"/>.</para>
 /// </summary>
-public sealed class RepositoryTest : UnitTest
+public sealed class RepositoryTest : Test
 {
   private UnityServiceLocator ServiceLocator { get; } = new(Bootstrapper.Unity());
 

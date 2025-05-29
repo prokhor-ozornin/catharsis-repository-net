@@ -1,7 +1,6 @@
 ﻿using System.Configuration;
 using System.Data;
 using System.Data.Common;
-using Catharsis.Extensions;
 using FluentAssertions;
 using FluentAssertions.Execution;
 using Xunit;

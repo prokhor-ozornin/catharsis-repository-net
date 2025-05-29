@@ -1,5 +1,4 @@
 ﻿using System.Data;
-using Catharsis.Commons;
 using Microsoft.EntityFrameworkCore;
 using FluentAssertions;
 using FluentAssertions.Execution;

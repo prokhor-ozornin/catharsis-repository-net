@@ -4,7 +4,6 @@ using NHibernate.Cfg;
 using FluentAssertions;
 using FluentAssertions.Execution;
 using Xunit;
-using Catharsis.Commons;
 using Catharsis.Extensions;
 
 namespace Catharsis.Repository.Tests;

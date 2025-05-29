@@ -1,5 +1,4 @@
-﻿using Catharsis.Commons;
-using Unity;
+﻿using Unity;
 
 namespace Catharsis.Repository.Tests;
 

@@ -1,13 +1,10 @@
-﻿using AutoFixture;
-using Catharsis.Extensions;
+﻿using Catharsis.Extensions;
 using FluentAssertions;
 
 namespace Catharsis.Repository.Tests;
 
 public class Test : IDisposable
 {
-  protected IFixture Fixture { get; } = new Fixture();
-
   protected Test()
   {
   }

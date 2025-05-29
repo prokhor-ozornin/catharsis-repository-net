@@ -1,7 +1,6 @@
 ﻿using System.Configuration;
 using System.Data;
 using System.Data.Entity.Core.Objects;
-using Catharsis.Commons;
 using Catharsis.Extensions;
 using FluentAssertions;
 using FluentAssertions.Execution;

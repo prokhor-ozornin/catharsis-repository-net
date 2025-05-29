@@ -4,7 +4,6 @@ using FluentNHibernate.Cfg.Db;
 using NHibernate.Cfg;
 using NHibernate.Tool.hbm2ddl;
 using Unity;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace Catharsis.Repository.Tests;
 

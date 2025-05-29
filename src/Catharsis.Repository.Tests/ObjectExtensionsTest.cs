@@ -1,6 +1,4 @@
-﻿using Catharsis.Commons;
-using CommonServiceLocator;
-using FluentAssertions;
+﻿using FluentAssertions;
 using FluentAssertions.Execution;
 using Unity.ServiceLocation;
 using Xunit;

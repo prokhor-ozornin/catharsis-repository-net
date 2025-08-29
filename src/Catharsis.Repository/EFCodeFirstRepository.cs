@@ -22,7 +22,8 @@ public class EFCodeFirstRepository<TEntity> : RepositoryBase<TEntity> where TEnt
   ///   <para></para>
   /// </summary>
   /// <param name="context"></param>
-  public EFCodeFirstRepository(DbContext context) => DbContext = context;
+  /// <exception cref="ArgumentNullException">If <paramref name="context"/> is <see langword="null"/>.</exception>
+  public EFCodeFirstRepository(DbContext context) => DbContext = context ??  throw new ArgumentNullException(nameof(context));
 
   /// <summary>
   ///   <para>Returns enumerator to iterate through entities of <typeparamref name="TEntity"/> type in the underlying data storage.</para>

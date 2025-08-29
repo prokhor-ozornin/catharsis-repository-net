@@ -20,9 +20,10 @@ public class NHibernateRepository<TEntity> : RepositoryBase<TEntity> where TEnti
   ///   <para>You can force several instances of repository for different entity types share the same <see cref="ISession"/> object, making caching more efficient.</para>
   /// </summary>
   /// <param name="session">NHibernate session, used for operations.</param>
+  /// <exception cref="ArgumentNullException">If <paramref name="session"/> is <see langword="null"/>.</exception>
   public NHibernateRepository(ISession session)
   {
-    Session = session;
+    Session = session ?? throw new ArgumentNullException(nameof(session));
     Session.FlushMode = Manual;
   }
 
@@ -31,8 +32,11 @@ public class NHibernateRepository<TEntity> : RepositoryBase<TEntity> where TEnti
   ///   <para>Each repository instance manages a single NHibernate <see cref="ISession"/> object internally.</para>
   /// </summary>
   /// <param name="sessionFactory">NHibernate session factory, used for creation of <see cref="ISession"/>s.</param>
+  /// <exception cref="ArgumentNullException">If <paramref name="sessionFactory"/> is <see langword="null"/>.</exception>
   public NHibernateRepository(ISessionFactory sessionFactory)
   {
+    if (sessionFactory is null) throw new ArgumentNullException(nameof(sessionFactory));
+    
     Session = sessionFactory.OpenSession();
     Session.FlushMode = Manual;
     OwnsSession = true;
@@ -43,7 +47,8 @@ public class NHibernateRepository<TEntity> : RepositoryBase<TEntity> where TEnti
   ///   <para>Each repository instance manages a single NHibernate <see cref="ISession"/> object internally.</para>
   /// </summary>
   /// <param name="configuration">NHibernate configuration object, used for creation of <see cref="ISessionFactory"/>.</param>
-  public NHibernateRepository(Configuration? configuration) : this(configuration?.BuildSessionFactory())
+  /// <exception cref="ArgumentNullException">If <paramref name="configuration"/> is <see langword="null"/>.</exception>
+  public NHibernateRepository(Configuration configuration) : this(configuration?.BuildSessionFactory())
   {
   }
 

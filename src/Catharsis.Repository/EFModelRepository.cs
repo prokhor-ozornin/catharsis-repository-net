@@ -1,6 +1,7 @@
 ﻿using System.Data;
 using System.Data.Entity.Core.Objects;
 using System.Linq.Expressions;
+using Catharsis.Extensions;
 
 namespace Catharsis.Repository;
 
@@ -23,9 +24,10 @@ public class EFModelRepository<TEntity> : RepositoryBase<TEntity> where TEntity 
   ///   <para>Creates new instance of Entity Framework ORM repository that works with mapped entities of <typeparamref name="TEntity"/> type.</para>
   /// </summary>
   /// <param name="context">Shared <see cref="ObjectContext"/> instance, used for operations. Its lifecycle must be controlled by external code.</param>
+  /// <exception cref="ArgumentNullException">If <paramref name="context"/> is <see langword="null"/>.</exception>
   public EFModelRepository(ObjectContext context)
   {
-    ObjectContext = context;
+    ObjectContext = context ?? throw new ArgumentNullException(nameof(context));
     ObjectSet = ObjectContext.CreateObjectSet<TEntity>();
   }
 
@@ -33,8 +35,13 @@ public class EFModelRepository<TEntity> : RepositoryBase<TEntity> where TEntity 
   ///   <para>Creates new instance of Entity Framework ORM repository that works with mapped entities of <typeparamref name="TEntity"/> type.</para>
   /// </summary>
   /// <param name="connection">Connection string, used for internal instantiation of database <see cref="IDbConnection"/> object. Proper closing and life cycle management of created <see cref="IDbConnection"/> object will be performed automatically.</param>
+  /// <exception cref="ArgumentNullException">If <paramref name="connection"/> is <see langword="null"/>.</exception>
+  /// <exception cref="ArgumentException">If <paramref name="connection"/> is invalid string.</exception>
   public EFModelRepository(string connection)
   {
+    if (connection is null) throw new ArgumentNullException(nameof(connection));
+    if (connection.IsEmpty()) throw new ArgumentException(nameof(connection));
+    
     ObjectContext = new ObjectContext(connection);
     ObjectSet = ObjectContext.CreateObjectSet<TEntity>();
     OwnsContext = true;

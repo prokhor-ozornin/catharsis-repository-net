@@ -1,10 +1,10 @@
 ﻿using System.Data;
-using NHibernate;
-using NHibernate.Cfg;
+using Catharsis.Extensions;
 using FluentAssertions;
 using FluentAssertions.Execution;
+using NHibernate;
+using NHibernate.Cfg;
 using Xunit;
-using Catharsis.Extensions;
 
 namespace Catharsis.Repository.Tests;
 

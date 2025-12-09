@@ -1,8 +1,8 @@
 ﻿using System.Data;
 using Catharsis.Extensions;
-using NHibernate;
 using FluentAssertions;
 using FluentAssertions.Execution;
+using NHibernate;
 using Xunit;
 
 namespace Catharsis.Repository.Tests.Implementation;

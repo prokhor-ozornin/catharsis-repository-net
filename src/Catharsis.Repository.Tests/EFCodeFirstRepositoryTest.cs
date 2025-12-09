@@ -1,7 +1,7 @@
 ﻿using System.Data;
-using Microsoft.EntityFrameworkCore;
 using FluentAssertions;
 using FluentAssertions.Execution;
+using Microsoft.EntityFrameworkCore;
 using Xunit;
 
 namespace Catharsis.Repository.Tests;
